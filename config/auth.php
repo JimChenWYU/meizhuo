@@ -41,7 +41,7 @@ return [
     |
     */
 
-    'table' => 'users',
+    'table' => 'manager',
 
     /*
     |--------------------------------------------------------------------------
@@ -64,4 +64,5 @@ return [
         'expire' => 60,
     ],
 
+    'registered' => env('APP_AUTH_IS_CAN_REGISTER', false),
 ];

@@ -1,7 +1,7 @@
 /**
  * Created by lenovo on 2017/4/2.
  */
-// window._ = require('lodash');
+window._ = require('lodash');
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -11,7 +11,7 @@
 
 // window.$ = window.jQuery = require('jquery');
 
-require('bootstrap-sass');
+// require('bootstrap-sass');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -27,12 +27,13 @@ window.Vue = require('vue');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-// window.axios = require('axios');
-//
-// window.axios.defaults.headers.common = {
-//   'X-Requested-With': 'XMLHttpRequest'
-// };
+window.axios = require('axios');
 
+window.axios.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest'
+};
+
+window.$url = require('./url.js');
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -45,3 +46,28 @@ window.Vue = require('vue');
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+
+/**
+ *  bind axios and lodash to Vue
+ */
+axios.interceptors.response.use(response => {
+    return Promise.resolve(response)
+}, errors => {
+  return Promise.reject(errors.response)
+})
+
+Object.defineProperty(Vue.prototype, '$http', {
+  value: window.axios,
+  writable: false
+})
+
+Object.defineProperty(Vue.prototype, '_', {
+  value: window._,
+  writable: false
+})
+
+Object.defineProperty(Vue.prototype, '$url', {
+  value: window.$url,
+  writable: false
+})
+
