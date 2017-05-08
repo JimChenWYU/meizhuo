@@ -14,11 +14,11 @@
 use Illuminate\Routing\Router;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('sign');
 });
 
-Route::group([ 'prefix' => 'api', 'namespace' => 'Api' ], function (Router $router) {
-    $router->group([ 'prefix' => 'v1' ], function (Router $router) {
+Route::group([ 'namespace' => 'Api' ], function (Router $router) {
+    $router->group([ 'prefix' => 'api/v1' ], function (Router $router) {
         $router->post('sign', [ 'uses' => 'SignController@store' ]);
     });
 });
