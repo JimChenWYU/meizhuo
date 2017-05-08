@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Signer extends Model
 {
-    //
-    public $timestamps = false;
-
     /**
      * @var array
      */

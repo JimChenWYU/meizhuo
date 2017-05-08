@@ -25,9 +25,9 @@ class Signers extends Migration
             $table->text('introduce')->default('');
             $table->timestamps();
 
-            $table->index('major');
-            $table->unique('student_id');
+            $table->index('student_id');
             $table->index('name');
+            $table->index('department');
         });
     }
 

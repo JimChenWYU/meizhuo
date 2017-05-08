@@ -5,3 +5,7 @@ Homestead.yaml
 Homestead.json
 .env
 mz_db.sql
+public/css
+public/js
+public/images
+npm-debug.log

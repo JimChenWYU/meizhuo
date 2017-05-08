@@ -82,7 +82,7 @@
                 </md-input-container>
 
                 <md-layout md-column>
-                    <md-button class="md-raised md-primary" type="submit" md-fab-bottom-center>确定</md-button>
+                    <md-button class="md-raised md-primary" type="submit" md-fab-bottom-center :disabled="!isCanSubmit">确定</md-button>
                 </md-layout>
 
 
@@ -119,14 +119,15 @@
     export default {
         data() {
             return {
-                name: '陈君武',
-                student_id: '3114002521',
-                major: '计算机科学与技术',
-                phone_num: '18219111672',
-                grade: '大一',
-                department: '营销策划',
-                introduce: '哈哈哈哈哈',
+                name: '',
+                student_id: '',
+                major: '',
+                phone_num: '',
+                grade: '',
+                department: '',
+                introduce: '',
 
+                isCanSubmit: true,
                 alert: {
                     content: '出错了！',
                     ok: '确定'
@@ -179,28 +180,26 @@
 
         methods: {
             submit() {
-//                console.log('submit')
-//                console.log(this.$url.sign)
-//                console.log(this.userData)
-                this.$http.post(this.$url.sign, this.userData)
-                        .then(response => {
-                          console.log(response)
-                            this.openDialog('tip', () => {
-                                this.alert = {
-                                    content: `${this.userData.department} 报名成功！`,
-                                    ok: '确定'
-                                }
-                            })
-                        })
-                        .catch(error => {
-                            console.log(error)
-                            this.openDialog('tip', () => {
-                                this.alert = {
-                                    content: error.data.error.message,
-                                    ok: '确定'
-                                }
-                            })
-                        })
+              this.isCanSubmit = false;
+              this.$http.post(this.$url.sign, this.userData)
+                  .then(response => {
+                    this.isCanSubmit = true;
+                    this.openDialog('tip', () => {
+                      this.alert = {
+                        content: `${this.userData.department} 报名成功！`,
+                        ok: '确定'
+                      }
+                    })
+                  })
+                  .catch(error => {
+                    this.isCanSubmit = true;
+                    this.openDialog('tip', () => {
+                      this.alert = {
+                        content: error.data.error.message,
+                        ok: '确定'
+                      }
+                    })
+                  })
             },
 
             onOpen() {
@@ -212,13 +211,10 @@
             },
 
             onConfirmClose(type) {
-                console.log(type === 'ok')
                 if (type === 'ok') {
                     this.submit()
                 }
             },
-
-
 
             // 处理弹框
             openDialog(ref, callback) {
@@ -236,6 +232,7 @@
                 }
 
             },
+
             closeDialog(ref) {
                 this.$refs[ref].close();
             }

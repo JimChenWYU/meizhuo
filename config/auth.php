@@ -63,6 +63,4 @@ return [
         'table'  => 'password_resets',
         'expire' => 60,
     ],
-
-    'registered' => env('APP_AUTH_IS_CAN_REGISTER', false),
 ];

@@ -13,39 +13,34 @@
 
     <!-- Styles -->
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">--}}
-    <link href="{{ mix('/css/admin.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/vue-material@0.7.1/dist/vue-material.css">
+    <link href="{{ mix('/css/admin.css') }}" rel="stylesheet">
 
 </head>
 <body id="app-layout">
-<div id="admin">
+<div id="admin" class="{{ Auth::guest() ? '' : 'container' }}">
+    @if(Auth::guest())
     <nav class="header-tab">
         <md-toolbar class="md-dense" v-clock>
-            @if(! Auth::guest())
-                <md-button class="md-icon-button" @click.native="toggleLeftSidenav">
-                    <md-icon>menu</md-icon>
-                </md-button>
-            @else
-                <div class="padding-left-40px"></div>
-            @endif
+            {{--@if(! Auth::guest())--}}
+                {{--<md-button class="md-icon-button" @click.native="toggleLeftSidenav">--}}
+                    {{--<md-icon>menu</md-icon>--}}
+                {{--</md-button>--}}
+            {{--@else--}}
+                {{--<div class="padding-left-40px"></div>--}}
+            {{--@endif--}}
+            <div class="padding-left-40px"></div>
+
             <h2 class="md-title" style="flex: 1"><span v-text="toolbar.header"></span></h2>
 
-            @if(! Auth::guest())
-            <md-button>欢迎 {{ Auth::user()->name }}</md-button>
-            <md-button href="{{ url('auth/logout') }}">退出</md-button>
-            @endif
+            {{--@if(! Auth::guest())--}}
+            {{--<md-button>欢迎 {{ Auth::user()->name }}</md-button>--}}
+            {{--<md-button href="{{ url('auth/logout') }}">退出</md-button>--}}
+            {{--@endif--}}
         </md-toolbar>
     </nav>
+    @endif
 
-    <md-sidenav class="md-left" ref="leftSidenav" @open="open('Left')" @close="close('Left')" v-clock>
-        <md-toolbar class="md-large">
-            <div class="md-toolbar-container">
-                <h3 class="md-title">Sidenav content</h3>
-            </div>
-        </md-toolbar>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi cupiditate esse necessitatibus beatae nobis, deserunt ut est fugit, tempora deleniti, eligendi commodi doloribus. Nemo, assumenda possimus, impedit inventore perferendis iusto!</p>
-    </md-sidenav>
     @yield('content')
 </div>
 <!-- JavaScripts -->
@@ -62,17 +57,75 @@
       data: {
         toolbar: {
           header: '后台管理系统'
-        }
+        },
+        permission: [
+          { isPermit: true, name: '移动组', value: '移动组' },
+          { isPermit: true, name: 'Web组', value: 'Web组' },
+          { isPermit: true, name: '美工组', value: '美工组' },
+          { isPermit: true, name: '营销策划', value: '营销策划' }
+        ],
+        nutrition: [
+          {
+            dessert: 'Frozen yogurt',
+            type: 'ice_cream',
+            calories: '159',
+            fat: '6.0',
+            comment: 'Icy'
+          },
+          {
+            dessert: 'Ice cream sandwich',
+            type: 'ice_cream',
+            calories: '237',
+            fat: '9.0',
+            comment: 'Super Tasty'
+          },
+          {
+            dessert: 'Eclair',
+            type: 'pastry',
+            calories: '262',
+            fat: '16.0',
+            comment: ''
+          },
+          {
+            dessert: 'Cupcake',
+            type: 'pastry',
+            calories: '305',
+            fat: '3.7',
+            comment: ''
+          },
+          {
+            dessert: 'Gingerbread',
+            type: 'other',
+            calories: '356',
+            fat: '16.0',
+            comment: ''
+          }
+        ],
       },
       methods: {
         toggleLeftSidenav: function () {
           this.$refs.leftSidenav.toggle();
         },
-        open: function (ref) {
-          console.log('Opened: ' + ref);
-        },
-        close: function (ref) {
-          console.log('Closed: ' + ref);
+        onPagination(pagination) {
+          console.log(pagination)
+        }
+      },
+      directives: {
+        displayButton: {
+          update: function (el) {
+
+            function on() {
+              if (window.innerWidth <= 1281) {
+                el.style.visibility = 'visible'
+              } else {
+                el.style.visibility = 'hidden'
+              }
+            }
+
+            on()
+
+            window.addEventListener('resize', on)
+          }
         }
       }
     });

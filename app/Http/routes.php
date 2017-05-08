@@ -34,19 +34,35 @@ Route::group(['prefix' => 'sign'], function (Router $router) {
     })->where('vue_capture', '[\/\w\.-]*');
 });
 
-Route::group(['prefix' => 'auth'], function (Router $router) {
+Route::group(['prefix' => 'auth'], function (Router $router) use ($app) {
 
-    $router->group([ 'namespace' => 'Auth' ], function (Router $router) {
+    $router->group([ 'namespace' => 'Auth' ], function (Router $router) use ($app) {
         $router->get('login', 'AuthController@getLogin');
         $router->post('login', 'AuthController@postLogin');
         $router->get('logout', 'AuthController@getLogout');
+        // 注册路由...
+        if ($app->isLocal()) {
+            $router->get('register', 'AuthController@getRegister');
+            $router->post('register', 'AuthController@postRegister');
+        }
     });
 
     $router->get('home', 'ManagerController@index');
+    $router->get('android', 'ManagerController@android');
+    $router->get('web', 'ManagerController@web');
+    $router->get('design', 'ManagerController@design');
+    $router->get('marking', 'ManagerController@marking');
 
-    // 注册路由...
-    if (! config('auth.registered')) {
-        $router->get('register', 'AuthController@getRegister');
-        $router->post('register', 'AuthController@postRegister');
-    }
+    $router->get('person/{id}', 'ManagerController@person')->where('id', '[0-9]+');
+
+    $router->get('home/{id}', 'ManagerController@person')->where('id', '[0-9]+');
+    $router->get('android/{id}', 'ManagerController@person')->where('id', '[0-9]+');
+    $router->get('web/{id}', 'ManagerController@person')->where('id', '[0-9]+');
+    $router->get('design/{id}', 'ManagerController@person')->where('id', '[0-9]+');
+    $router->get('marking/{id}', 'ManagerController@person')->where('id', '[0-9]+');
+
+    $router->post('search', 'ManagerController@search');
+    $router->get('search', function () {
+        return redirect('/auth/home');
+    });
 });

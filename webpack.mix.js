@@ -1,9 +1,10 @@
-const mix = require('laravel-mix')
+const { mix, config } = require('laravel-mix')
 const webpack = require('webpack')
+const merge = require('webpack-merge')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 const env = process.env.NODE_ENV
 
-const dev = {
+const base = {
   module: {
     rules: [
       {
@@ -11,27 +12,21 @@ const dev = {
         loader: "style-loader!css-loader"
       }
     ]
-  },
+  }
+}
+
+const dev = {
   devtool: '#eval-source-map',
   plugins: [
     new LiveReloadPlugin(),
     new webpack.DefinePlugin({
       'process.env': '"development"'
     }),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
   ]
 }
 
 const prod = {
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        loader: "style-loader!css-loader"
-      }
-    ]
-  },
   devtool: '#source-map',
   plugins: [
     new webpack.DefinePlugin({
@@ -46,12 +41,11 @@ const prod = {
   ]
 }
 
-const config = () => {
-  console.log('Environment is ' + env + '\n');
-  return mix.config.inProduction ? prod : dev;
+const WebpackConfig = () => {
+  return merge(base, (config.inProduction ? prod : dev));
 }
 
-mix.webpackConfig(config());
+mix.webpackConfig(WebpackConfig());
 
 /*
  |--------------------------------------------------------------------------
@@ -64,11 +58,13 @@ mix.webpackConfig(config());
  |
  */
 
-mix.js('resources/assets/js/main.js', 'public/js')
+mix.copy('resources/assets/images/', 'public/images')
+    .js('resources/assets/js/main.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
     .sass('resources/assets/sass/admin.scss', 'public/css')
     .extract(['vue', 'vue-material', 'vue-router', 'axios', 'vuerify'])
 
-if (mix.config.inProduction) {
+if (config.inProduction) {
   mix.version();
+  mix.sourceMaps();
 }
