@@ -1,10 +1,18 @@
+const path = require('path')
 const { mix, config } = require('laravel-mix')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 const env = process.env.NODE_ENV
 
+// console.log(path.resolve(__dirname, 'resources/assets'))
+
 const base = {
+  resolve: {
+    alias: {
+      '~': path.resolve(__dirname, 'resources/assets')
+    }
+  },
   module: {
     rules: [
       {
@@ -38,6 +46,9 @@ const prod = {
         drop_console: false,
       }
     }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['vendor', 'manifest']
+    })
   ]
 }
 

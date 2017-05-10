@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}" />
 </head>
 <body>
+@yield('content')
 <div id="app" v-cloak>
-    @yield('content')
 </div>
 <script src="{{ mix('/js/manifest.js') }}"></script>
 <script src="{{ mix('/js/vendor.js') }}"></script>

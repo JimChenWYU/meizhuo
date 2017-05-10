@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Applicant;
 use App\Signer;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class ManagerController extends Controller
      */
     public function index()
     {
-        $signerObject = Signer::paginate(10);
+        $signerObject = Applicant::paginate(10);
         $signerArray = $signerObject->toArray();
 //        dd($signerArray);
         return view('auth.home')
@@ -36,7 +37,7 @@ class ManagerController extends Controller
 
     public function android()
     {
-        $signerObject = Signer::where('department', '移动组')->paginate(10);
+        $signerObject = Applicant::where('department', '移动组')->paginate(10);
         $signerArray = $signerObject->toArray();
 //        dd($signerArray);
         return view('auth.department.android')
@@ -47,7 +48,7 @@ class ManagerController extends Controller
 
     public function web()
     {
-        $signerObject = Signer::where('department', 'Web组')->paginate(10);
+        $signerObject = Applicant::where('department', 'Web组')->paginate(10);
         $signerArray = $signerObject->toArray();
 //        dd($signerArray);
         return view('auth.department.web')
@@ -58,7 +59,7 @@ class ManagerController extends Controller
 
     public function design()
     {
-        $signerObject = Signer::where('department', '美工组')->paginate(10);
+        $signerObject = Applicant::where('department', '美工组')->paginate(10);
         $signerArray = $signerObject->toArray();
 //        dd($signerArray);
         return view('auth.department.design')
@@ -69,7 +70,7 @@ class ManagerController extends Controller
 
     public function marking()
     {
-        $signerObject = Signer::where('department', '营销策划')->paginate(10);
+        $signerObject = Applicant::where('department', '营销策划')->paginate(10);
         $signerArray = $signerObject->toArray();
 //        dd($signerArray);
         return view('auth.department.marking')
@@ -80,7 +81,7 @@ class ManagerController extends Controller
 
     public function person(Request $request, $id)
     {
-        $personObject = Signer::where('id', $id)->first();
+        $personObject = Applicant::where('id', $id)->first();
         if (! is_null($personObject)) {
             $personArray = $personObject->toArray();
             return view('auth.person')->with('person', $personArray);
@@ -89,14 +90,14 @@ class ManagerController extends Controller
             ->withErrors([ 'not-found-person' => '没有找到该同学报名信息！' ]);
     }
 
-    public function search(Request $request)
+    public function postSearch(Request $request)
     {
         $this->validate($request, [
            'search' => 'required'
         ]);
         $parameters = $request->only(['search']);
 
-        $signerObject = Signer::whereRaw(sprintf("LOCATE('%s', name) > 0", $parameters['search']))
+        $signerObject = Applicant::whereRaw(sprintf("LOCATE('%s', name) > 0", $parameters['search']))
             ->orWhereRaw(sprintf("LOCATE('%s', student_id) > 0", $parameters['search']))->paginate(10);
 
         $signerArray = $signerObject->toArray();
@@ -105,5 +106,10 @@ class ManagerController extends Controller
             ->with('search', true)
             ->with('departmentName', "搜索 `{$parameters['search']}`")
             ->with('department', $signerArray);
+    }
+
+    public function getSearch()
+    {
+        return redirect('/auth/home');
     }
 }

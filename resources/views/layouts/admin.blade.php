@@ -18,10 +18,10 @@
 
 </head>
 <body id="app-layout">
-<div id="admin" class="{{ Auth::guest() ? '' : 'container' }}">
+<div id="admin" class="{{ Auth::guest() ? '' : 'container' }}" v-cloak>
     @if(Auth::guest())
     <nav class="header-tab">
-        <md-toolbar class="md-dense" v-clock>
+        <md-toolbar class="md-dense">
             {{--@if(! Auth::guest())--}}
                 {{--<md-button class="md-icon-button" @click.native="toggleLeftSidenav">--}}
                     {{--<md-icon>menu</md-icon>--}}

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Signers extends Migration
+class CreateSigners extends Migration
 {
     /**
      * Run the migrations.
@@ -18,16 +18,16 @@ class Signers extends Migration
             $table->increments('id');
             $table->string('student_id', 10);
             $table->string('name', 16);
-            $table->string('major', 32);
-            $table->string('phone_num', 20);
-            $table->string('grade', 10);
+            $table->string('major', 32)->nullable();
+            $table->string('phone_num', 20)->nullable();
+            $table->string('grade', 10)->nullable();
             $table->string('department', 10);
-            $table->text('introduce')->default('');
+            $table->text('introduce')->nullable();
+            $table->tinyInteger('has_apply')->default('0');
+            $table->tinyInteger('status')->default('1');
             $table->timestamps();
 
-            $table->index('student_id');
-            $table->index('name');
-            $table->index('department');
+            $table->unique(['student_id', 'department']);
         });
     }
 

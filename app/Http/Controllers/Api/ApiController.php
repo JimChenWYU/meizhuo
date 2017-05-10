@@ -119,15 +119,23 @@ class ApiController extends Controller
     }
 
     /**
+     * @param $message
+     * @param array $headers
+     * @return Response
+     */
+    protected function respondWithMsg($message, array $headers = [])
+    {
+        return response($message, $this->statusCode, $headers);
+    }
+
+    /**
      * @param array $array
      * @param array $headers
      * @return mixed
      */
     protected function respondWithArray(array $array, array $headers = [])
     {
-        $response = Response::json($array, $this->statusCode, $headers);
-
-        return $response;
+        return response($array, $this->statusCode, $headers);
     }
 
     /**

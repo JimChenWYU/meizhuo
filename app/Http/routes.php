@@ -13,13 +13,14 @@
 
 use Illuminate\Routing\Router;
 
-Route::get('/', function () {
-    return redirect('sign');
-});
+Route::get('/', 'HomeController@index');
 
 Route::group([ 'namespace' => 'Api' ], function (Router $router) {
     $router->group([ 'prefix' => 'api/v1' ], function (Router $router) {
-        $router->post('sign', [ 'uses' => 'SignController@store' ]);
+        $router->post('apply', [ 'uses' => 'ApplicantController@store' ]);
+        $router->post('sign', [ 'uses' => 'SignController@sign' ]);
+        $router->get('signers', [ 'uses' => 'SignController@getSignersByDepartment' ]);
+        $router->post('interview', 'InterviewController@postLogin');
     });
 });
 
@@ -28,10 +29,13 @@ Route::group([ 'namespace' => 'Api' ], function (Router $router) {
 | Dashboard Routes
 |--------------------------------------------------------------------------
 */
-Route::group(['prefix' => 'sign'], function (Router $router) {
-    $router->get('/{vue_capture?}', function () {
-        return view('home.sign');
-    })->where('vue_capture', '[\/\w\.-]*');
+/**
+ * 签到前台
+ */
+Route::get('sign/{vue_capture?}', 'SignSystemController@index')->where('vue_capture', '[\/\w\.-]*');
+
+Route::group(['prefix' => 'apply'], function (Router $router) {
+    $router->get('/{vue_capture?}', 'HomeController@apply')->where('vue_capture', '[\/\w\.-]*');
 });
 
 Route::group(['prefix' => 'auth'], function (Router $router) use ($app) {
@@ -61,8 +65,9 @@ Route::group(['prefix' => 'auth'], function (Router $router) use ($app) {
     $router->get('design/{id}', 'ManagerController@person')->where('id', '[0-9]+');
     $router->get('marking/{id}', 'ManagerController@person')->where('id', '[0-9]+');
 
-    $router->post('search', 'ManagerController@search');
-    $router->get('search', function () {
-        return redirect('/auth/home');
-    });
+    $router->get('search', 'ManagerController@getSearch');
+    $router->post('search', 'ManagerController@postSearch');
+
+    $router->get('sign/{vue_capture?}', 'SignSystemController@index')
+        ->where('vue_capture', '[\/\w\.-]*');
 });

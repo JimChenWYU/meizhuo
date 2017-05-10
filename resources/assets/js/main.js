@@ -19,9 +19,7 @@ import 'vue-material/dist/vue-material.css'
 import Vuerify from 'vuerify'
 import VueRouter from 'vue-router'
 import App from './App'
-import Url from './url'
 
-Vue.use(Url)
 Vue.use(VueMaterial)
 Vue.use(Vuerify)
 Vue.use(VueRouter)
@@ -32,9 +30,19 @@ const router = new VueRouter({
   scrollBehavior: () => ({ y: 0 }),
   routes: [
     {
-        path: '/sign',
-        name: 'sign',
+        path: '/apply',
+        name: 'apply',
         component: require('./components/SignForm.vue')
+    },
+    {
+      path: '/sign',
+      name: 'sign',
+      component: require('./components/SignSystemForm.vue')
+    },
+    {
+      path: '/auth/sign',
+      name: 'auth.sign',
+      component: require('./components/InterviewLoginForm.vue')
     }
   ]
 })

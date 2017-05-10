@@ -40,7 +40,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">503</div>
+                <div class="title">维护中...</div>
             </div>
         </div>
     </body>

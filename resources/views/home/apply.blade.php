@@ -1,4 +1,4 @@
-@extends('layouts.signSystem')
+@extends('layouts.app')
 
 @section('content')
 
