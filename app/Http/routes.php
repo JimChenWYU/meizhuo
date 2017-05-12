@@ -20,7 +20,17 @@ Route::group([ 'namespace' => 'Api' ], function (Router $router) {
         $router->post('apply', [ 'uses' => 'ApplicantController@store' ]);
         $router->post('sign', [ 'uses' => 'SignController@sign' ]);
         $router->get('signers', [ 'uses' => 'SignController@getSignersByDepartment' ]);
+        $router->delete('signer', [ 'uses' => 'SignController@deleteSignersById' ]);
+        // 登录
         $router->post('interview', 'InterviewController@postLogin');
+        $router->get('interview/autologin', 'InterviewController@autoLogin')->middleware('jwt.auth');
+        // 退出
+        $router->get('interview/', 'InterviewController@getLogout')->middleware('jwt.auth');
+        $router->post('interview/search', 'InterviewController@postSearch');
+
+        $router->get('interview/signer', 'InterviewController@getSigner')->middleware('jwt.auth');
+        // 测试
+        $router->get('interview/test', 'InterviewController@testToken')->middleware('jwt.auth');
     });
 });
 
@@ -33,6 +43,7 @@ Route::group([ 'namespace' => 'Api' ], function (Router $router) {
  * 签到前台
  */
 Route::get('sign/{vue_capture?}', 'SignSystemController@index')->where('vue_capture', '[\/\w\.-]*');
+Route::get('interview/{vue_capture?}', 'SignSystemController@index')->where('vue_capture', '[\/\w\.-]*');
 
 Route::group(['prefix' => 'apply'], function (Router $router) {
     $router->get('/{vue_capture?}', 'HomeController@apply')->where('vue_capture', '[\/\w\.-]*');
@@ -71,3 +82,28 @@ Route::group(['prefix' => 'auth'], function (Router $router) use ($app) {
     $router->get('sign/{vue_capture?}', 'SignSystemController@index')
         ->where('vue_capture', '[\/\w\.-]*');
 });
+
+if ($app->isLocal()) {
+    Route::get('event', function () {
+
+        $parameters = [
+            'unique_id' => request()->session()->getId(),
+            'department' => '移动组',
+            'number' => 1,
+        ];
+        $group = new \App\Group();
+        $group->unique_id = $parameters['unique_id'];
+        $group->department = $parameters['department'];
+        $group->number = $parameters['number'];
+
+        \App\Group::where('department', $parameters['department'])
+            ->where('number', $parameters['number'])
+            ->update(['unique_id' => $parameters['unique_id']]);
+
+        $group = \App\Group::where('department', $parameters['department'])
+            ->where('number', $parameters['number'])->first();
+
+        event(new \App\Events\InterviewerLoginEvent($group));
+        return 'event fire';
+    });
+}

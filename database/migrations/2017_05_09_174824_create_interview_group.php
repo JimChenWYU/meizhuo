@@ -16,6 +16,7 @@ class CreateInterviewGroup extends Migration
         Schema::create('interview_group', function ($table)
         {
             $table->increments('id');
+            $table->string('unique_id', 16)->nullable();
             $table->string('department', 10);
             $table->tinyInteger('number')->default('1');
             $table->tinyInteger('lock')->nullable()->default('0');

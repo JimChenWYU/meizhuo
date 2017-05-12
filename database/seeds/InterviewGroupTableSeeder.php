@@ -30,6 +30,8 @@ class InterviewGroupTableSeeder extends Seeder
         ];
         //
         DB::table('interview_group')->delete();
-        DB::table('interview_group')->insert($data);
+        foreach ($data as $_data) {
+            \App\Group::create($_data);
+        }
     }
 }

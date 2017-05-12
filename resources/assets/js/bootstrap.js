@@ -29,9 +29,26 @@ window.Vue = require('vue');
 
 window.axios = require('axios');
 
-window.axios.defaults.headers.common = {
+axios.defaults.headers.common = {
   'X-Requested-With': 'XMLHttpRequest'
 };
+
+axios.interceptors.request.use(request => {
+    request.headers.common['authorization'] = window.localStorage.getItem('token')
+
+    return Promise.resolve(request)
+}, error => Promise.reject(error))
+
+axios.interceptors.response.use(response => {
+    let authorization = response.headers.authorization
+    // console.log(authorization)
+    // console.log(typeof authorization !== 'undefined')
+    if (typeof authorization !== 'undefined') {
+        window.localStorage.setItem('token', authorization)
+    }
+
+    return Promise.resolve(response)
+}, errors => Promise.reject(errors.response))
 
 window.$url = require('./url.js');
 /**
@@ -50,11 +67,6 @@ window.$url = require('./url.js');
 /**
  *  bind axios and lodash to Vue
  */
-axios.interceptors.response.use(response => {
-    return Promise.resolve(response)
-}, errors => {
-  return Promise.reject(errors.response)
-})
 
 Object.defineProperty(Vue.prototype, '$http', {
   value: window.axios,

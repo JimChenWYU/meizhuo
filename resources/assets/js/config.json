@@ -1,0 +1,12 @@
+{
+    "url": {
+        "base_url": {
+            "dev": "http://meizhuo.app",
+            "prod": ""
+        },
+        "base_socket_url": {
+            "dev": "http://127.0.0.1:3001",
+            "prod": ""
+        }
+    }
+}

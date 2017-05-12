@@ -30,6 +30,26 @@ class ApplicantTableSeeder extends Seeder
                     'introduce' => $fake->regexify('[\u4e00-\u9fa5]{6,50}')
                 ]);
             }
+
+            \App\Applicant::create([
+                'student_id' => 3114002521,
+                'name' => '陈君武',
+                'major' => '计算机科学与技术',
+                'phone_num' => '18219111672',
+                'grade' => '大一',
+                'department' => '移动组',
+                'introduce' => '哈哈哈哈哈哈啊哈哈'
+            ]);
+
+            \App\Applicant::create([
+                'student_id' => 3114002521,
+                'name' => '陈君武',
+                'major' => '计算机科学与技术',
+                'phone_num' => '18219111672',
+                'grade' => '大一',
+                'department' => 'Web组',
+                'introduce' => '哈哈哈哈哈哈啊哈哈'
+            ]);
         }
     }
 }

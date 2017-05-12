@@ -91,7 +91,6 @@
 
 
                     <md-dialog-confirm
-                            :md-title="confirm.title"
                             :md-content-html="confirm.contentHtml"
                             :md-ok-text="confirm.ok"
                             :md-cancel-text="confirm.cancel"
@@ -145,7 +144,6 @@
                     ok: '确定'
                 },
                 confirm: {
-                    title: '确认框',
                     contentHtml: `<h3>您确认提交信息吗？</h3>`,
                     ok: '确定',
                     cancel: '取消'
@@ -157,7 +155,7 @@
             name: ['required'],
             student_id: [
                 'required',
-                {test: /[0-9]+/, message: '只能是数字'}
+                {test: /^[0-9]{10,10}$/, message: '只能是10位数字'}
             ],
             major: ['required'],
             phone_num: [

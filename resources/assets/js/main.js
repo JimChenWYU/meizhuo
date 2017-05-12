@@ -15,6 +15,7 @@ require('./bootstrap');
  * the application, or feel free to tweak this setup for your needs.
  */
 import VueMaterial from 'vue-material'
+import VueSocketio from 'vue-socket.io'
 import 'vue-material/dist/vue-material.css'
 import Vuerify from 'vuerify'
 import VueRouter from 'vue-router'
@@ -23,27 +24,38 @@ import App from './App'
 Vue.use(VueMaterial)
 Vue.use(Vuerify)
 Vue.use(VueRouter)
+Vue.use(VueSocketio, $url.base_socket_url)
 
 const router = new VueRouter({
   mode: 'history',
   base: __dirname,
   scrollBehavior: () => ({ y: 0 }),
   routes: [
-    {
-        path: '/apply',
-        name: 'apply',
-        component: require('./components/SignForm.vue')
-    },
-    {
-      path: '/sign',
-      name: 'sign',
-      component: require('./components/SignSystemForm.vue')
-    },
-    {
-      path: '/auth/sign',
-      name: 'auth.sign',
-      component: require('./components/InterviewLoginForm.vue')
-    }
+      {
+          path: '/apply',
+          name: 'apply',
+          component: require('./components/SignForm.vue')
+      },
+      {
+        path: '/sign',
+        name: 'sign',
+        component: require('./components/SignSystemForm.vue')
+      },
+      {
+        path: '/interview/login',
+        name: 'interview.login',
+        component: require('./components/InterviewLoginForm.vue')
+      },
+      {
+          path: '/interview',
+          name: 'interview',
+          redirect: { name: 'interview.login' }
+      },
+      {
+          path: '/interview/home',
+          name: 'interview.home',
+          component: require('./components/InterviewHome.vue')
+      }
   ]
 })
 

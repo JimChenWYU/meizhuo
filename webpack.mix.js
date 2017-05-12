@@ -10,8 +10,10 @@ const env = process.env.NODE_ENV
 const base = {
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, 'resources/assets')
-    }
+      '~': path.resolve(__dirname, 'resources/assets'),
+      'socket.io': path.resolve(__dirname, 'node_modules/socket.io-client/socket.io.js')
+    },
+    extensions: ['.js', '.vue'] // 引用js和vue文件可以省略后缀名
   },
   module: {
     rules: [
@@ -73,7 +75,7 @@ mix.copy('resources/assets/images/', 'public/images')
     .js('resources/assets/js/main.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
     .sass('resources/assets/sass/admin.scss', 'public/css')
-    .extract(['vue', 'vue-material', 'vue-router', 'axios', 'vuerify'])
+    .extract(['vue', 'vue-material', 'vue-router', 'axios', 'vuerify', 'vue-socket.io'])
 
 if (config.inProduction) {
   mix.version();

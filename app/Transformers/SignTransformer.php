@@ -42,7 +42,7 @@ class SignTransformer extends TransformerAbstract
 			'department' => $resource->department,
 			'introduce' => $resource->introduce,
 			'has_apply' => (bool) $resource->has_apply,
-			'status' => (bool) $resource->status,
+			'status' => $resource->status,
 			'created_at' => $resource->created_at,
 			'updated_at' => $resource->updated_at,
 			

@@ -61,11 +61,32 @@ class SignController extends ApiController
     }
 
     /**
+     * 删除
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function deleteSignersById(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required'
+        ], [
+            'id.required' => '缺少id'
+        ]);
+
+        $parameters = $request->all();
+
+        Signer::destroy($parameters['id']);
+
+        return $this->getSignersByDepartment();
+    }
+
+    /**
      *
      *
      * @return array
      */
-    protected function getSignersArray()
+    public function getSignersArray()
     {
         $list = Signer::whereIn('status', [1, 2, 3])->orderBy('created_at', 'asc')->get()->toArray();
 //        $list = \DB::select("SELECT * FROM mz_signers");
