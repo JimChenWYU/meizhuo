@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "axios": "^0.16.0",
+    "babel-loader": "^7.0.0",
     "bootstrap-sass": "^3.0.0",
     "css-loader": "^0.28.0",
     "gulp": "^3.8.8",

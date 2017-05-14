@@ -5,5 +5,5 @@
 
     @include('auth.components.menu')
 
-    @include('auth.components.showList')
+    @include('auth.components.interviewerList')
 @endsection

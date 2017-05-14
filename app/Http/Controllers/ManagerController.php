@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Applicant;
+use App\Group;
 use App\Signer;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Validator;
 
 class ManagerController extends Controller
 {
@@ -80,6 +82,37 @@ class ManagerController extends Controller
             ->with('department', $signerArray);
     }
 
+    public function interviewer()
+    {
+        $group = Group::get();
+
+        if (isset($group) && $group = $group->toArray()) {
+            return view('auth.interviewer.interviewers')
+                ->with('interview', true)
+                ->with('name', '面试组别')
+                ->with('group', $group);
+//            dd($group);
+        }
+        return view('auth.interviewer.interviewers')
+            ->with('interview', true)
+            ->with('name', '面试组别')
+            ->with('group', []);
+    }
+
+    public function forceLogout($id)
+    {
+        if ($id) {
+            Group::where('unique_id', $id)->update([
+                'unique_id' => '',
+                'is_login' => 0
+            ]);
+
+            return redirect()->action('ManagerController@interviewer');
+        }
+
+        return redirect('/auth/interviewer')->withErrors([ 'msg' => '操作失败！' ]);
+    }
+
     public function person(Request $request, $id)
     {
         $personObject = Applicant::where('id', $id)->first();
@@ -88,7 +121,7 @@ class ManagerController extends Controller
             return view('auth.person')->with('person', $personArray);
         }
         return redirect('/auth/home')
-            ->withErrors([ 'not-found-person' => '没有找到该同学报名信息！' ]);
+            ->withErrors([ 'msg' => '没有找到该同学报名信息！' ]);
     }
 
     public function postSearch(Request $request)

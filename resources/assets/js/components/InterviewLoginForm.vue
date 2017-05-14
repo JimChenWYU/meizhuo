@@ -90,6 +90,7 @@
         replace: false,
         data() {
             return {
+                unique_id_key: '',
                 unique_id: '',
                 department: '',
                 number: '',
@@ -109,6 +110,7 @@
                 }
             }
         },
+
         vuerify: {
             number: [
                 'required',
@@ -135,7 +137,9 @@
             },
 
             authFlag() {
-                return this.$route
+                return {
+                    unique_id_key: this.unique_id_key
+                }
             }
         },
 
@@ -143,7 +147,8 @@
             submit() {
                 this.isCanSubmit = false
                 this.unique_id = this._.uniqueId(new Date().getTime())
-                this.setItem('unique_id', this.unique_id)
+                this.unique_id_key = this._.uniqueId(new Date().getTime())
+                this.setItem(this.unique_id_key, this.unique_id)
                 this.$http.post(this.$url.interview, this.groupData)
                     .then(response => {
 //                        console.log(response)
@@ -163,19 +168,6 @@
                         }
                       })
                     })
-            },
-
-            autoLogin() {
-                if (this.getItem('token')) {
-                    this.$http.get(this.$url.interviewAuto)
-                        .then(response => {
-                            if (response.data.error) {
-                                return
-                            }
-                            this.$router.push({ name: 'interview.home', params: this.authFlag })
-                        })
-                        .catch(error => {})
-                }
             },
 
             onOpen() {
@@ -210,21 +202,14 @@
 
             closeDialog(ref) {
               this.$refs[ref].close();
-            },
-
-            setItem(key, value) {
-                window.localStorage.setItem(key, value)
-            },
-
-            getItem(key) {
-                return window.localStorage.getItem(key)
             }
         },
 
         sockets: {
             interviewerPostLoginChannel(obj) {
-                let id = this.getItem('unique_id')
-
+                let id = this.getItem(this.unique_id_key)
+//                console.log(obj)
+//                console.log(id)
                 if (obj.unique_id == id) {
                     if (obj.code == 200) {
                         this.$router.push({ name: 'interview.home', params: this.authFlag })
@@ -239,10 +224,6 @@
                     }
                 }
             }
-        },
-
-        created() {
-            this.autoLogin()
         }
     }
 </script>

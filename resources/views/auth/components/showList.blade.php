@@ -1,4 +1,4 @@
-@include('auth.department.components.search')
+@include('auth.components.search')
 
 <div class="container-list">
     <md-table-card class="main-content">

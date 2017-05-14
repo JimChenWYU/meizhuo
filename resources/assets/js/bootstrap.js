@@ -34,8 +34,7 @@ axios.defaults.headers.common = {
 };
 
 axios.interceptors.request.use(request => {
-    request.headers.common['authorization'] = window.localStorage.getItem('token')
-
+    request.headers.common['authorization'] = window.sessionStorage.getItem('token')
     return Promise.resolve(request)
 }, error => Promise.reject(error))
 
@@ -44,7 +43,7 @@ axios.interceptors.response.use(response => {
     // console.log(authorization)
     // console.log(typeof authorization !== 'undefined')
     if (typeof authorization !== 'undefined') {
-        window.localStorage.setItem('token', authorization)
+        window.sessionStorage.setItem('token', authorization)
     }
 
     return Promise.resolve(response)

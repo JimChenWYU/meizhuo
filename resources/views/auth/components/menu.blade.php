@@ -61,6 +61,15 @@
                     <md-icon>send</md-icon>&nbsp;<span>营销策划</span>
                 </a>
             </md-list-item>
+
+            <md-subheader>管理</md-subheader>
+
+            <md-list-item>
+                <a href="{{ url('/auth/interviewer') }}"
+                   class="md-list-item-container md-button {{ !isset($interview) ?:'router-link-active' }}">
+                    <md-icon>send</md-icon>&nbsp;<span>强制面试官退出</span>
+                </a>
+            </md-list-item>
         </md-list>
     </div>
 </md-sidenav>

@@ -30,9 +30,9 @@ class InterviewerEventListener
     {
         //
         if ($event instanceof InterviewerLoginEvent) {
-            app('log')->info('interviewer login : ' . $event->group->toJson());
+            app('log')->info('interviewer login : ' . json_encode($event->group));
         } else if ($event instanceof InterviewerLogoutEvent) {
-            app('log')->info('interviewer logout : ' . $event->group->toJson());
+            app('log')->info('interviewer logout : ' . json_encode($event->group));
         }
     }
 }

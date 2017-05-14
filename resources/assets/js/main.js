@@ -59,8 +59,24 @@ const router = new VueRouter({
   ]
 })
 
+Vue.prototype.setItem = (key, value) => {
+    window.sessionStorage.setItem(key, value)
+};
+
+Vue.prototype.getItem = (key) => {
+    return window.sessionStorage.getItem(key)
+};
+
+Vue.directive('focus', {
+    inserted: function (el) {
+        console.log(el)
+        // 聚焦元素
+        el.focus()
+    }
+})
+
 new Vue({
-  el: '#app',
-  router,
-  render: h => h(App)
+    el: '#app',
+    router,
+    render: h => h(App)
 })

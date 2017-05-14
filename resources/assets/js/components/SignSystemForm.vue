@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-cloak>
     <section>
       <navbar class="md-transparent"></navbar>
     </section>
@@ -47,26 +47,6 @@
               </md-input-container>
 
             </div>
-
-            <md-dialog-confirm
-                    :md-title="confirm.title"
-                    :md-content-html="confirm.contentHtml"
-                    :md-ok-text="confirm.ok"
-                    :md-cancel-text="confirm.cancel"
-                    @open="onOpen"
-                    @close="onConfirmClose"
-                    ref="confirmSubmit">
-            </md-dialog-confirm>
-
-            <!-- 弹框 -->
-            <md-dialog-alert
-                    :md-content-html="alert.content"
-                    :md-ok-text="alert.ok"
-                    @open="onOpen"
-                    @close="onClose"
-                    ref="tip">
-            </md-dialog-alert>
-
           </md-layout>
           <md-layout>
           </md-layout>
@@ -89,26 +69,36 @@
         <md-layout md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33">
           <md-card class="group">
             <h2>安卓组</h2>
-            <p v-for="android of lineUp.android" class="container-group">
+            <p v-for="dep of lineUp.android" class="container-group">
               <md-layout>
                 <md-layout>
-                  <span class="space">{{ android.student_id }}</span>
+                  <span class="space" style="cursor: pointer">{{ dep.name }}</span>
+                  <md-tooltip md-direction="bottom">
+                    学号：{{ dep.student_id }}
+                  </md-tooltip>
                 </md-layout>
 
                 <md-layout>
-                  <span class="space">{{ android.name }}</span>
+                  <span class="space" :class="[statusColor(dep.status)]">{{ statusTip(dep.status) }}</span>
                 </md-layout>
 
-                <md-layout>
-                  <span class="space" :class="[statusColor(android.status)]">{{ statusTip(android.status) }}</span>
-                </md-layout>
-
-                <md-layout>
-                  <span class="space">
-                    <md-button class="md-icon-button" @click.native="delSigner(android.id)">
-                        <md-icon>delete</md-icon>
-                      </md-button>
-                  </span>
+                <md-layout style="flex-wrap: nowrap">
+                  <md-layout>
+                    <md-button class="md-icon-button" @click.native="restoreQueueUp(dep.id)">
+                      <md-icon>settings_backup_restore</md-icon>
+                      <md-tooltip md-direction="bottom">
+                        {{ dep.name }} 重新进行排队
+                      </md-tooltip>
+                    </md-button>
+                  </md-layout>
+                  <md-layout>
+                    <md-button class="md-icon-button" @click.native="delSigner(dep.id)">
+                      <md-icon>delete</md-icon>
+                      <md-tooltip md-direction="bottom">
+                        从队列剔除 {{ dep.name }}
+                      </md-tooltip>
+                    </md-button>
+                  </md-layout>
                 </md-layout>
               </md-layout>
             </p>
@@ -120,26 +110,36 @@
         <md-layout md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33">
           <md-card class="group">
             <h2>Web组</h2>
-            <p v-for="web of lineUp.web" class="container-group">
+            <p v-for="dep of lineUp.web" class="container-group">
               <md-layout>
                 <md-layout>
-                  <span class="space">{{ web.student_id }}</span>
+                  <span class="space" style="cursor: pointer">{{ dep.name }}</span>
+                  <md-tooltip md-direction="bottom">
+                    学号：{{ dep.student_id }}
+                  </md-tooltip>
                 </md-layout>
 
                 <md-layout>
-                  <span class="space">{{ web.name }}</span>
+                  <span class="space" :class="[statusColor(dep.status)]">{{ statusTip(dep.status) }}</span>
                 </md-layout>
 
-                <md-layout>
-                  <span class="space" :class="[statusColor(web.status)]">{{ statusTip(web.status) }}</span>
-                </md-layout>
-
-                <md-layout>
-                  <span class="space">
-                    <md-button class="md-icon-button" @click.native="delSigner(web.id)">
-                        <md-icon>delete</md-icon>
-                      </md-button>
-                  </span>
+                <md-layout style="flex-wrap: nowrap">
+                  <md-layout>
+                    <md-button class="md-icon-button" @click.native="restoreQueueUp(dep.id)">
+                      <md-icon>settings_backup_restore</md-icon>
+                      <md-tooltip md-direction="bottom">
+                        {{ dep.name }} 重新进行排队
+                      </md-tooltip>
+                    </md-button>
+                  </md-layout>
+                  <md-layout>
+                    <md-button class="md-icon-button" @click.native="delSigner(dep.id)">
+                      <md-icon>delete</md-icon>
+                      <md-tooltip md-direction="bottom">
+                        从队列剔除 {{ dep.name }}
+                      </md-tooltip>
+                    </md-button>
+                  </md-layout>
                 </md-layout>
               </md-layout>
             </p>
@@ -151,26 +151,36 @@
         <md-layout md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33">
           <md-card class="group">
             <h2>美工组</h2>
-            <p v-for="design of lineUp.design" class="container-group">
+            <p v-for="dep of lineUp.design" class="container-group">
               <md-layout>
                 <md-layout>
-                  <span class="space">{{ design.student_id }}</span>
+                  <span class="space" style="cursor: pointer">{{ dep.name }}</span>
+                  <md-tooltip md-direction="bottom">
+                    学号：{{ dep.student_id }}
+                  </md-tooltip>
                 </md-layout>
 
                 <md-layout>
-                  <span class="space">{{ design.name }}</span>
+                  <span class="space" :class="[statusColor(dep.status)]">{{ statusTip(dep.status) }}</span>
                 </md-layout>
 
-                <md-layout>
-                  <span class="space" :class="[statusColor(design.status)]">{{ statusTip(design.status) }}</span>
-                </md-layout>
-
-                <md-layout>
-                  <span class="space">
-                    <md-button class="md-icon-button" @click.native="delSigner(design.id)">
-                        <md-icon>delete</md-icon>
-                      </md-button>
-                  </span>
+                <md-layout style="flex-wrap: nowrap">
+                  <md-layout>
+                    <md-button class="md-icon-button" @click.native="restoreQueueUp(dep.id)">
+                      <md-icon>settings_backup_restore</md-icon>
+                      <md-tooltip md-direction="bottom">
+                        {{ dep.name }} 重新进行排队
+                      </md-tooltip>
+                    </md-button>
+                  </md-layout>
+                  <md-layout>
+                    <md-button class="md-icon-button" @click.native="delSigner(dep.id)">
+                      <md-icon>delete</md-icon>
+                      <md-tooltip md-direction="bottom">
+                        从队列剔除 {{ dep.name }}
+                      </md-tooltip>
+                    </md-button>
+                  </md-layout>
                 </md-layout>
               </md-layout>
             </p>
@@ -182,26 +192,36 @@
         <md-layout md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33">
           <md-card class="group">
             <h2>营销策划</h2>
-            <p v-for="marking of lineUp.marking" class="container-group">
+            <p v-for="dep of lineUp.marking" class="container-group">
               <md-layout>
                 <md-layout>
-                  <span class="space">{{ marking.student_id }}</span>
+                  <span class="space" style="cursor: pointer">{{ dep.name }}</span>
+                  <md-tooltip md-direction="bottom">
+                    学号：{{ dep.student_id }}
+                  </md-tooltip>
                 </md-layout>
 
                 <md-layout>
-                  <span class="space">{{ marking.name }}</span>
+                  <span class="space" :class="[statusColor(dep.status)]">{{ statusTip(dep.status) }}</span>
                 </md-layout>
 
-                <md-layout>
-                  <span class="space" :class="[statusColor(marking.status)]">{{ statusTip(marking.status) }}</span>
-                </md-layout>
-
-                <md-layout>
-                  <span class="space">
-                    <md-button class="md-icon-button" @click.native="delSigner(marking.id)">
-                        <md-icon>delete</md-icon>
-                      </md-button>
-                  </span>
+                <md-layout style="flex-wrap: nowrap">
+                  <md-layout>
+                    <md-button class="md-icon-button" @click.native="restoreQueueUp(dep.id)">
+                      <md-icon>settings_backup_restore</md-icon>
+                      <md-tooltip md-direction="bottom">
+                        {{ dep.name }} 重新进行排队
+                      </md-tooltip>
+                    </md-button>
+                  </md-layout>
+                  <md-layout>
+                    <md-button class="md-icon-button" @click.native="delSigner(dep.id)">
+                      <md-icon>delete</md-icon>
+                      <md-tooltip md-direction="bottom">
+                        从队列剔除 {{ dep.name }}
+                      </md-tooltip>
+                    </md-button>
+                  </md-layout>
                 </md-layout>
               </md-layout>
             </p>
@@ -210,8 +230,29 @@
       </md-layout>
     </section>
 
+    <section><IM :unique_id_key="unique_id_key"></IM></section>
+
+    <md-dialog-confirm
+        :md-content-html="confirm.contentHtml"
+        :md-ok-text="confirm.ok"
+        :md-cancel-text="confirm.cancel"
+        @close="onConfirmClose"
+        ref="confirmSubmit">
+    </md-dialog-confirm>
+
+    <!-- 弹框 -->
+    <md-dialog-alert
+        :md-content-html="alert.content"
+        :md-ok-text="alert.ok"
+        ref="tip">
+    </md-dialog-alert>
+
+    <md-snackbar md-position="top right" ref="tip_next_interviewer" md-duration="4000">
+      <span>{{ snackbar.msg }}</span>
+    </md-snackbar>
   </div>
 </template>
+
 <style scoped>
   p {
     margin: 0;
@@ -280,13 +321,16 @@
     color: #ff1411;
   }
 </style>
+
 <script type="es6">
       import Navbar from './layouts/Navbar.vue'
+      import IM from './layouts/IMDialogue.vue'
       export default {
           components: {
-              Navbar
+              Navbar, IM
           },
           replace: false,
+
           data() {
               return {
                   name: '',
@@ -296,16 +340,22 @@
                   isCanSubmit: true,
                   isCanUpdate: true,
 
+                  unique_id_key: '',
+                  unique_id: '',
+
                   alert: {
                       content: '出错了！',
                       ok: '确定'
                   },
 
                   confirm: {
-                      title: '确认框',
                       contentHtml: `<h3>您确认提交信息吗？</h3>`,
                       ok: '确定',
                       cancel: '取消'
+                  },
+
+                  snackbar: {
+                      msg: ''
                   },
 
                   lineUp: {
@@ -395,6 +445,29 @@
                       })
               },
 
+              restoreQueueUp(id) {
+
+              },
+
+              auth() {
+                  let name = '前台';
+                  if (name || (name = prompt("Please enter your name", ""))) {
+                      this.unique_id = this._.uniqueId(new Date().getTime())
+                      console.log(name)
+                      this.$socket.emit('receptionLogin', {
+                          unique_id: this.unique_id,
+                          department: name,
+                          number: this._.uniqueId(this._.random(0, 100))
+                      })
+                      this.unique_id_key = this._.uniqueId(new Date().getTime())
+                      this.setItem(this.unique_id_key, this.unique_id)
+                  } else {
+                      let opened = window.open('about:blank','_self');
+                      opened.opener=null;
+                      opened.close();
+                  }
+              },
+
               statusColor(status) {
                   switch (status * 1) {
                       case 1:
@@ -447,14 +520,6 @@
                   }
               },
 
-              onOpen() {
-                // console.log(this.userData);
-              },
-
-              onClose(type) {
-                  console.log('Closed', type)
-              },
-
               onConfirmClose(type) {
                   if (type === 'ok') {
                       this.submit()
@@ -467,19 +532,26 @@
                       callback();
                   }
                   switch(ref) {
-                    case 'confirmSubmit':
-                      if (! this.validate) {
+                      case 'confirmSubmit':
+                          if (! this.validate) {
+                              break;
+                          }
+                      case 'setYourName':
+                      case 'tip_next_interviewer':
+                      case 'tip':
+                          this.$refs[ref].open();
                           break;
-                      }
-                    case 'tip':
-                        this.$refs[ref].open();
-                        break;
+
                   }
               },
 
               closeDialog(ref) {
                   this.$refs[ref].close();
               }
+          },
+
+          created() {
+              this.auth()
           },
 
           mounted() {
@@ -489,6 +561,13 @@
           sockets: {
               updateSignerListChannel(dataList) {
                   this.lineUp = dataList
+              },
+              message(messagesObj) {
+                  if (messagesObj.unique_id != this.unique_id) {
+                      this.openDialog('tip_next_interviewer', () => {
+                          this.snackbar.msg = `${messagesObj.user} 对您说：${messagesObj.msg}`
+                      })
+                  }
               }
           }
     }

@@ -3,7 +3,7 @@
 @section('content')
     @include('layouts.nav.adminNav')
 
-    @include('auth.department.components.menu')
+    @include('auth.components.menu')
 
     <div class="container-person">
         <md-table-card class="main-content">

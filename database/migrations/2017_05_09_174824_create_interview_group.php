@@ -19,7 +19,7 @@ class CreateInterviewGroup extends Migration
             $table->string('unique_id', 16)->nullable();
             $table->string('department', 10);
             $table->tinyInteger('number')->default('1');
-            $table->tinyInteger('lock')->nullable()->default('0');
+            $table->tinyInteger('is_login')->default('0');
             $table->timestamps();
 
             $table->unique(['department', 'number']);

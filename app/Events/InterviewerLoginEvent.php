@@ -19,8 +19,9 @@ class InterviewerLoginEvent extends InterviewerEvent implements ShouldBroadcast
      */
     public function __construct(Group $group)
     {
-        //
-        $this->group = $group;
+        // 必须这么做，无法在broadcastWith获取数组，
+        // 不然修改的属性toArray()之后无法生效
+        $this->group = $group->toArray();
     }
 
     /**
@@ -35,6 +36,6 @@ class InterviewerLoginEvent extends InterviewerEvent implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        return $this->group->toArray();
+        return $this->group;
     }
 }

@@ -13,6 +13,7 @@
     const BASE_SOCKET_URL = (process.env.NODE_ENV != 'production') ?
         config.url.base_socket_url.dev : config.url.base_socket_url.prod;
 
+    // url维护
     return {
         base_url: BASE_URL,
         base_socket_url: BASE_SOCKET_URL,

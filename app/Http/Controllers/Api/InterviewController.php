@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Applicant;
 use App\Events\InterviewerLoginEvent;
 use App\Events\InterviewerLogoutEvent;
+use App\Events\MessageToReceptionEvent;
 use App\Events\UpdateSignerListEvent;
 use App\Group;
 use App\Signer;
 use App\Transformers\ApplicantTransformer;
 use App\Transformers\SignTransformer;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class InterviewController extends ApiController
 {
@@ -38,57 +38,38 @@ class InterviewController extends ApiController
         $first = (array) \DB::table('interview_group')
             ->where('department', $parameters['department'])
             ->where('number', $parameters['number'])
-            ->where('lock', 0)
             ->first();
 
         if (count($first)) {
 
-            $flag = Group::where('department', $parameters['department'])
-                ->where('number', $parameters['number'])
-                ->update(['unique_id' => $parameters['unique_id']]);
-
-            if ($flag) {
-//                dd(Group::first());
-                $group = Group::where('department', $parameters['department'])
+            if (is_null($first['unique_id']) || empty($first['unique_id'])) {
+                Group::where('department', $parameters['department'])
                     ->where('number', $parameters['number'])
-                    ->first();
-
-                $this->eventLoginFire($group);
-
-                $token = sprintf('bearer %s', \JWTAuth::fromUser($group));
-
-                return $this->respondWithArray(array_merge($group->toArray(), compact('token')), [
-                    'Authorization' => $token
-                ]);
-            }
-        }
-
-        return $this->respondWithError('登录失败！', 400);
-    }
-
-    public function autoLogin() {
-
-        $parameters = \JWTAuth::parseToken()->toUser()->toArray();
-
-        if (count($parameters)) {
-            $flag = Group::where('department', $parameters['department'])
-                ->where('number', $parameters['number'])
-                ->update(['unique_id' => $parameters['unique_id']]);
-
-            if ($flag) {
-//                dd(Group::first());
-                $group = Group::where('department', $parameters['department'])
+                    ->update([
+                        'unique_id' => $parameters['unique_id'],
+                        'is_login' => 0
+                    ]);
+            } else {
+                Group::where('department', $parameters['department'])
                     ->where('number', $parameters['number'])
-                    ->first();
-
-                $this->eventLoginFire($group);
-
-                $token = sprintf('bearer %s', \JWTAuth::fromUser($group));
-
-                return $this->respondWithArray(array_merge($group->toArray(), compact('token')), [
-                    'Authorization' => $token
-                ]);
+                    ->update([
+                        'is_login' => 1
+                    ]);
             }
+
+            $group = Group::where('department', $parameters['department'])
+                ->where('number', $parameters['number'])
+                ->first();
+
+            $group->unique_id = $parameters['unique_id'];
+
+            $this->eventLoginFire($group);
+
+            $token = sprintf('bearer %s', \JWTAuth::fromUser($group));
+
+            return $this->respondWithArray(array_merge($group->toArray(), compact('token')), [
+                'Authorization' => $token
+            ]);
         }
 
         return $this->respondWithError('登录失败！', 400);
@@ -101,6 +82,13 @@ class InterviewController extends ApiController
         $group = Group::where('department', $parameters['department'])
             ->where('number', $parameters['number'])
             ->first();
+
+        Group::where('department', $parameters['department'])
+            ->where('number', $parameters['number'])
+            ->update([
+                'unique_id' => '',
+                'is_login' => 0
+            ]);
 
         $this->eventLogoutFire($group);
 
@@ -170,7 +158,15 @@ class InterviewController extends ApiController
                 // 获得数组
                 $dataList = app(SignController::class)->getSignersArray();
 
+                $sender = [
+                    'unique_id' => $parameters['unique_id'],
+                    'department' => $parameters['department'],
+                    'number' => $parameters['number'],
+                    'msg' => sprintf('通知下一位面试者到 %s %d', $parameters['department'], $parameters['number']),
+                ];
+
                 $this->eventUpdateSignerList($dataList);
+                $this->eventMessageFire($sender);
 
                 $signer->status = 3;
                 return $this->respondWith($signer, new SignTransformer());
@@ -193,6 +189,7 @@ class InterviewController extends ApiController
      */
     protected function eventLoginFire(Group $group)
     {
+//        dd($group->toArray());
         event(new InterviewerLoginEvent($group));
     }
 
@@ -204,6 +201,16 @@ class InterviewController extends ApiController
     protected function eventLogoutFire(Group $group)
     {
         event(new InterviewerLogoutEvent($group));
+    }
+
+    /**
+     * 发送消息通知前台面试
+     *
+     * @param array $sender
+     */
+    protected function eventMessageFire(array $sender)
+    {
+        event(new MessageToReceptionEvent($sender));
     }
 
     /**

@@ -35,6 +35,7 @@
           </md-input-container>
       </form>
     </section>
+
     <section class="padding-left-right-30px">
       <md-table-card class="main-content">
         <md-table>
@@ -83,6 +84,9 @@
                       class="md-raised md-accent" @click.native="open('confirmNext')">{{ buttonTip }}</md-button></md-layout>
         </md-layout>
     </section>
+
+    <section><IM :unique_id_key="unique_id_key"></IM></section>
+
     <md-snackbar md-position="top center" ref="not_search" md-duration="4000">
       <span>搜索不到！</span>
       <md-button class="md-accent" md-theme="light-blue" @click.native="search()">Retry</md-button>
@@ -121,9 +125,10 @@
 </style>
 <script type="es6">
     import Navbar from './layouts/Navbar.vue'
+    import IM from './layouts/IMDialogue.vue'
     export default {
         components: {
-            Navbar
+            Navbar, IM
         },
 
         replace: false,
@@ -133,6 +138,8 @@
 
                 search_student_id: '',
                 search_department: '',
+
+                unique_id_key: '',
 
                 error: '',
                 isCanLogout: true,
@@ -221,6 +228,8 @@
                         if (response.data.error) {
                             this.error = response.data.error.message
                             this.open('error')
+                            this.isCanLogout = true
+                            return;
                         }
                         this.isCanLogout = true
 //                        window.location.reload()
@@ -285,15 +294,18 @@
 
             validateAuth() {
                 let auth = this.$route.params
-                if (this._.isUndefined(auth) || !auth.name) {
+                if (this._.isUndefined(auth) || !auth.unique_id_key) {
                     this.$socket.emit('interviewLogout');
                     this.$router.push({ name: 'interview.login'})
                 }
+//                console.log(`home: ${auth.unique_id_key}`)
+//                console.log(`home: ${this.getItem(auth.unique_id_key)}`)
+                this.unique_id_key = auth.unique_id_key
             },
 
             sockets: {
                 logout(interviewer) {
-                    if (this.auth.unique_id == interviewer.unique_id) {
+                    if (this.getItem(this.unique_id_key) == interviewer.unique_id) {
                         this.$router.push({ name: 'interview.login' })
                     }
                 }

@@ -23,9 +23,11 @@ Route::group([ 'namespace' => 'Api' ], function (Router $router) {
         $router->delete('signer', [ 'uses' => 'SignController@deleteSignersById' ]);
         // 登录
         $router->post('interview', 'InterviewController@postLogin');
-        $router->get('interview/autologin', 'InterviewController@autoLogin')->middleware('jwt.auth');
+
         // 退出
         $router->get('interview/', 'InterviewController@getLogout')->middleware('jwt.auth');
+
+        // 搜索
         $router->post('interview/search', 'InterviewController@postSearch');
 
         $router->get('interview/signer', 'InterviewController@getSigner')->middleware('jwt.auth');
@@ -67,6 +69,7 @@ Route::group(['prefix' => 'auth'], function (Router $router) use ($app) {
     $router->get('web', 'ManagerController@web');
     $router->get('design', 'ManagerController@design');
     $router->get('marking', 'ManagerController@marking');
+    $router->get('interviewer', 'ManagerController@interviewer');
 
     $router->get('person/{id}', 'ManagerController@person')->where('id', '[0-9]+');
 
@@ -76,34 +79,36 @@ Route::group(['prefix' => 'auth'], function (Router $router) use ($app) {
     $router->get('design/{id}', 'ManagerController@person')->where('id', '[0-9]+');
     $router->get('marking/{id}', 'ManagerController@person')->where('id', '[0-9]+');
 
+    $router->post('interviewer/{unique_id}', 'ManagerController@forceLogout')->where('id', '[0-9]+');
+
     $router->get('search', 'ManagerController@getSearch');
     $router->post('search', 'ManagerController@postSearch');
 
-    $router->get('sign/{vue_capture?}', 'SignSystemController@index')
-        ->where('vue_capture', '[\/\w\.-]*');
+//    $router->get('sign/{vue_capture?}', 'SignSystemController@index')
+//        ->where('vue_capture', '[\/\w\.-]*');
 });
 
-if ($app->isLocal()) {
-    Route::get('event', function () {
-
-        $parameters = [
-            'unique_id' => request()->session()->getId(),
-            'department' => '移动组',
-            'number' => 1,
-        ];
-        $group = new \App\Group();
-        $group->unique_id = $parameters['unique_id'];
-        $group->department = $parameters['department'];
-        $group->number = $parameters['number'];
-
-        \App\Group::where('department', $parameters['department'])
-            ->where('number', $parameters['number'])
-            ->update(['unique_id' => $parameters['unique_id']]);
-
-        $group = \App\Group::where('department', $parameters['department'])
-            ->where('number', $parameters['number'])->first();
-
-        event(new \App\Events\InterviewerLoginEvent($group));
-        return 'event fire';
-    });
-}
+//if ($app->isLocal()) {
+//    Route::get('event', function () {
+//
+//        $parameters = [
+//            'unique_id' => request()->session()->getId(),
+//            'department' => '移动组',
+//            'number' => 1,
+//        ];
+//        $group = new \App\Group();
+//        $group->unique_id = $parameters['unique_id'];
+//        $group->department = $parameters['department'];
+//        $group->number = $parameters['number'];
+//
+//        \App\Group::where('department', $parameters['department'])
+//            ->where('number', $parameters['number'])
+//            ->update(['unique_id' => $parameters['unique_id']]);
+//
+//        $group = \App\Group::where('department', $parameters['department'])
+//            ->where('number', $parameters['number'])->first();
+//
+//        event(new \App\Events\InterviewerLoginEvent($group));
+//        return 'event fire';
+//    });
+//}

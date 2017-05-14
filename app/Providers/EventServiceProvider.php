@@ -20,6 +20,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\InterviewerLogoutEvent' => [
             'App\Listeners\InterviewerEventListener',
         ],
+
+        'App\Events\MessageToReceptionEvent' => [],
     ];
 
     /**

@@ -16,4 +16,6 @@ trait EventSettings
     protected $getLogoutChannel = 'interviewerGetLogoutChannel';
 
     protected $updateSignerListChannel = 'updateSignerListChannel';
+
+    protected $messageToReceptionChannel = 'messageToReceptionChannel';
 }

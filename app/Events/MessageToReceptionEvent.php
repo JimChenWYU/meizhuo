@@ -2,24 +2,25 @@
 
 namespace App\Events;
 
-use App\Group;
+use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class InterviewerLogoutEvent extends InterviewerEvent implements ShouldBroadcast
+class MessageToReceptionEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels, EventSettings;
 
-    public $group;
+    public $sender;
+
     /**
      * Create a new event instance.
-     * @param Group $group
+     * @param array $sender
      * @return void
      */
-    public function __construct(Group $group)
+    public function __construct(array $sender)
     {
         //
-        $this->group = $group->toArray();
+        $this->sender = $sender;
     }
 
     /**
@@ -29,11 +30,11 @@ class InterviewerLogoutEvent extends InterviewerEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return [ $this->getLogoutChannel ];
+        return [ $this->messageToReceptionChannel ];
     }
 
     public function broadcastWith()
     {
-        return $this->group;
+        return $this->sender;
     }
 }

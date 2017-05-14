@@ -13,12 +13,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://unpkg.com/vue-material@0.7.1/dist/vue-material.css">
-    <link href="{{ mix('/css/admin.css') }}" rel="stylesheet">
-    <style>
-        .md-title {
-            text-align: center;
-        }
-    </style>
+    {{--<link href="{{ mix('/css/admin.css') }}" rel="stylesheet">--}}
 </head>
 <body id="app-layout">
 <div id="app">

@@ -3,7 +3,7 @@
 @section('content')
     @include('layouts.nav.adminNav')
 
-    @include('auth.department.components.menu')
+    @include('auth.components.menu')
 
-    @include('auth.department.components.showList')
+    @include('auth.components.showList')
 @endsection
