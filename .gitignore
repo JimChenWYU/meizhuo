@@ -7,3 +7,5 @@ Homestead.json
 mz_db.sql
 npm-debug.log
 webhook.php
+.phpstorm.meta.php
+_ide_helper.php

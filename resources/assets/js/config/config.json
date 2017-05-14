@@ -6,7 +6,7 @@
         },
         "base_socket_url": {
             "dev": "ws://127.0.0.1:3001",
-            "prod": "ws://meizhuo.chenjunwu.cn:3001"
+            "prod": "ws://119.29.244.34:3001/"
         },
         "request_url": {
             "apply": "/api/v1/apply",
