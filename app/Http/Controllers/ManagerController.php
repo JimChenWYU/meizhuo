@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Applicant;
+use App\Events\InterviewerLogoutEvent;
 use App\Group;
 use App\Signer;
 use Illuminate\Http\Request;
@@ -102,10 +103,16 @@ class ManagerController extends Controller
     public function forceLogout($id)
     {
         if ($id) {
+            $group = Group::where('unique_id', $id)->first();
+
             Group::where('unique_id', $id)->update([
                 'unique_id' => '',
                 'is_login' => 0
             ]);
+
+            if (isset($group)) {
+                event(new InterviewerLogoutEvent($group));
+            }
 
             return redirect()->action('ManagerController@interviewer');
         }

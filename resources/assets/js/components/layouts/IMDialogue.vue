@@ -1,11 +1,11 @@
 <template>
     <div class="xxim_main">
-      <div class="xxim_header">
+      <div class="xxim_header" @click="expand()" v-hidden>
         <h2>通知</h2>
         <md-button class="md-icon-button md-primary" :class="{ tip_msg:  hasMsg.isTwinkling && !hasMsg.isExpanding}" style="color: #32cd32;">
           <md-icon>add_alert</md-icon>
         </md-button>
-        <md-button md-theme="md-transparent" class="md-icon-button md-primary expand" @click.native="expand()" v-hidden>
+        <md-button md-theme="md-transparent" class="md-icon-button md-primary expand" >
           <md-icon>expand_less</md-icon>
         </md-button>
       </div>
@@ -78,6 +78,7 @@
 
     .xxim_header {
         height: 40px;
+        cursor: pointer;
         background-color: #ffffff;
         border-radius: 10px 0 0 0;
         border-bottom: 1px solid #DCDCDC;
@@ -354,6 +355,7 @@
             },
 
             expand() {
+//                console.log(this.hasMsg)
                 this.hasMsg.isExpanding = !this.hasMsg.isExpanding
                 this.hasMsg.isTwinkling = false
             }
@@ -380,17 +382,18 @@
             hidden: {
                 inserted(el) {
                     el.addEventListener('click', () => {
-                        let container = el.parentNode.parentNode
+//                        console.log(el.childNodes[4])
+                        let container = el.parentNode
                         let bottom = container.style.bottom
 
                         if (bottom == '') {
                             bottom = '-500px'
                         }
                         if (bottom == '1px') {
-                            el.childNodes[1].innerText = 'expand_less'
+                            el.childNodes[4].childNodes[1].innerText = 'expand_less'
                             container.style.bottom = '-500px'
                         } else {
-                            el.childNodes[1].innerText = 'expand_more'
+                            el.childNodes[4].childNodes[1].innerText = 'expand_more'
                             container.style.bottom = '1px'
                         }
                     })
@@ -408,8 +411,8 @@
         },
 
         mounted() {
-//            console.log('unique_id_key: ' + this.unique_id_key)
-//            console.log('unique_id: ' + this.getItem(this.unique_id_key))
+            console.log('unique_id_key: ' + this.unique_id_key)
+            console.log('unique_id: ' + this.getItem(this.unique_id_key))
             this.unique_id = this.getItem(this.unique_id_key)
         }
     }

@@ -50,7 +50,7 @@ class SignController extends ApiController
     }
 
     /**
-     * 签到记录
+     * 签到记录 按组别分类
      *
      * @return mixed
      */
@@ -61,7 +61,7 @@ class SignController extends ApiController
     }
 
     /**
-     * 删除
+     * 删除队列的签到者
      *
      * @param Request $request
      * @return mixed
@@ -82,7 +82,7 @@ class SignController extends ApiController
     }
 
     /**
-     *
+     * 获取签到者列表
      *
      * @return array
      */
@@ -115,5 +115,26 @@ class SignController extends ApiController
         });
 
         return (array) $groupByDepartment;
+    }
+
+    /**
+     * 重置签到者的状态
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function restoreSignerStatus(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required'
+        ], [
+            'id.required' => '缺少id'
+        ]);
+
+        $parameters = $request->all();
+
+        Signer::where('id', $parameters['id'])->update([ 'status' => 1 ]);
+
+        return $this->getSignersByDepartment();
     }
 }

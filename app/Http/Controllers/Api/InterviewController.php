@@ -90,7 +90,7 @@ class InterviewController extends ApiController
                 'is_login' => 0
             ]);
 
-        $this->eventLogoutFire($group);
+//        $this->eventLogoutFire($group);
 
         \JWTAuth::parseToken()->refresh();
 

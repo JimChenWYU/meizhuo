@@ -81,7 +81,7 @@
                       class="md-raised md-warn" @click.native="logout()">退出</md-button></md-layout>
           <md-layout md-column>
               <md-button :disabled="!isCanLogout"
-                      class="md-raised md-accent" @click.native="open('confirmNext')">{{ buttonTip }}</md-button></md-layout>
+                      class="md-raised md-accent" @click.native="openDialog('confirmNext')">{{ buttonTip }}</md-button></md-layout>
         </md-layout>
     </section>
 
@@ -95,6 +95,13 @@
     <md-snackbar md-position="top center" ref="error" md-duration="4000">
       <span>{{ error }}</span>
     </md-snackbar>
+
+    <md-dialog-alert
+            :md-content="alert.content"
+            :md-ok-text="alert.ok"
+            @close="onClose"
+            ref="alert">
+    </md-dialog-alert>
 
     <md-dialog-confirm
           md-content-html="<h3>您确认到下一个面试者吗？</h3>"
@@ -143,6 +150,11 @@
 
                 error: '',
                 isCanLogout: true,
+
+                alert: {
+                    ok: '确定',
+                    content: ''
+                },
 
                 person: {
                     id: '',
@@ -227,7 +239,7 @@
                     .then(response => {
                         if (response.data.error) {
                             this.error = response.data.error.message
-                            this.open('error')
+                            this.openDialog('error')
                             this.isCanLogout = true
                             return;
                         }
@@ -238,7 +250,7 @@
                     .catch(error => {
                         if (error.data.error) {
                             this.error = error.data.error.message
-                            this.open('error')
+                            this.openDialog('error')
                         }
                         window.location.reload()
                     })
@@ -254,7 +266,7 @@
                     this.isCanLogout = true
                     if (response.data.error) {
                         this.error = response.data.error.message
-                        this.open('error')
+                        this.openDialog('error')
                         return
                     }
 
@@ -263,7 +275,7 @@
                     this.isCanLogout = true
                     if (error.data.error) {
                         this.error = error.data.error.message
-                        this.open('error')
+                        this.openDialog('error')
                         return
                     }
                 })
@@ -277,12 +289,15 @@
                     })
                     .catch(errors => {
                         if (errors.data.errors) {
-                            this.open('not_search')
+                            this.openDialog('not_search')
                         }
                     })
             },
 
-            open(tag) {
+            openDialog(tag, callback) {
+                if (this._.isFunction(callback)) {
+                    callback();
+                }
                 this.$refs[tag].open();
             },
 
@@ -290,6 +305,11 @@
                 if (type === 'ok') {
                     this.begin()
                 }
+            },
+
+            onClose(type) {
+//                console.log(type)
+                this.$router.push({ name: 'interview.login' })
             },
 
             validateAuth() {
@@ -302,12 +322,18 @@
 //                console.log(`home: ${this.getItem(auth.unique_id_key)}`)
                 this.unique_id_key = auth.unique_id_key
             },
+        },
 
-            sockets: {
-                logout(interviewer) {
-                    if (this.getItem(this.unique_id_key) == interviewer.unique_id) {
-                        this.$router.push({ name: 'interview.login' })
-                    }
+        sockets: {
+            logout(interviewer) {
+//                console.log(interviewer)
+                if (this.getItem(this.unique_id_key) == interviewer.unique_id) {
+                    this.openDialog('alert', () => {
+                        this.alert = {
+                            ok: '确定',
+                            content: '您被管理员强制退出，如有疑问请联系管理员'
+                        }
+                    })
                 }
             }
         },

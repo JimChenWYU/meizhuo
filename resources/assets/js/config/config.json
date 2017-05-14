@@ -1,0 +1,24 @@
+{
+    "url": {
+        "base_url": {
+            "dev": "http://meizhuo.app",
+            "prod": "http://meizhuo.chenjunwu.cn"
+        },
+        "base_socket_url": {
+            "dev": "ws://127.0.0.1:3001",
+            "prod": "ws://meizhuo.chenjunwu.cn:3001"
+        },
+        "request_url": {
+            "apply": "/api/v1/apply",
+            "signers": "/api/v1/signers",
+            "delSigner": "/api/v1/signer",
+            "restoreSignerStatus": "/api/v1/signer",
+            "sign": "/api/v1/sign",
+            "interview": "/api/v1/interview",
+            "interviewAuto": "/api/v1/interview/autologin",
+            "interviewOut": "/api/v1/interview",
+            "interviewSearch": "/api/v1/interview/search",
+            "interviewBegin": "/api/v1/interview/signer"
+        }
+    }
+}

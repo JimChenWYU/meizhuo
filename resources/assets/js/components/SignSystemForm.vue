@@ -250,6 +250,10 @@
     <md-snackbar md-position="top right" ref="tip_next_interviewer" md-duration="4000">
       <span>{{ snackbar.msg }}</span>
     </md-snackbar>
+
+    <md-snackbar md-position="top center" ref="error" md-duration="4000">
+      <span>{{ snackbar.msg }}</span>
+    </md-snackbar>
   </div>
 </template>
 
@@ -446,19 +450,67 @@
               },
 
               restoreQueueUp(id) {
+                  if(id) {
+                      if (confirm('确定要将删除他 (她) 重置为排队状态吗？')) {
+                          this.$http.put(this.$url.restoreSignerStatus, {
+                              id: id
+                          }).then(response => {
+                              if (response.data.error) {
+                                  this.openDialog('error', () => {
+                                      this.snackbar.msg = response.data.error.message
+                                  })
+                                  return
+                              }
+                              this.lineUp = response.data
+                          }).catch(error => {
+                              console.log(error)
+                              if (error.data.error) {
+                                  this.openDialog('error', () => {
+                                      this.snackbar.msg = error.data.error.message
+                                  })
+                              }
+                          })
+                      }
+                  }
+              },
 
+              delSigner(id) {
+                  if(id) {
+                      if (confirm('确定要从此队列中删除他 (她) 吗？')) {
+                          this.$http.delete(this.$url.delSigner, {
+                              params: {
+                                  id: id
+                              },
+                          }).then(response => {
+                              if (response.data.error) {
+                                  this.openDialog('error', () => {
+                                      this.snackbar.msg = response.data.error.message
+                                  })
+                                  return
+                              }
+                              this.lineUp = response.data
+                          }).catch(error => {
+                              console.log(error)
+                              if (error.data.error) {
+                                  this.openDialog('error', () => {
+                                      this.snackbar.msg = error.data.error.message
+                                  })
+                              }
+                          })
+                      }
+                  }
               },
 
               auth() {
-                  let name = '前台';
-                  if (name || (name = prompt("Please enter your name", ""))) {
+                  let name = "Manager";
+                  if (name) {
                       this.unique_id = this._.uniqueId(new Date().getTime())
-                      console.log(name)
-                      this.$socket.emit('receptionLogin', {
+                      let loginInfo = {
                           unique_id: this.unique_id,
                           department: name,
                           number: this._.uniqueId(this._.random(0, 100))
-                      })
+                      }
+                      this.$socket.emit('receptionLogin', loginInfo)
                       this.unique_id_key = this._.uniqueId(new Date().getTime())
                       this.setItem(this.unique_id_key, this.unique_id)
                   } else {
@@ -506,20 +558,6 @@
                       })
               },
 
-              delSigner(id) {
-                  if(id) {
-                      if (confirm('确定要从此队列中删除他 (她) 吗？')) {
-                          this.$http.delete(this.$url.delSigner, {
-                              params: {
-                                  id: id
-                              },
-                          }).then(response => {
-                              this.lineUp = response.data
-                          }).catch(error => {})
-                      }
-                  }
-              },
-
               onConfirmClose(type) {
                   if (type === 'ok') {
                       this.submit()
@@ -536,9 +574,7 @@
                           if (! this.validate) {
                               break;
                           }
-                      case 'setYourName':
-                      case 'tip_next_interviewer':
-                      case 'tip':
+                      default:
                           this.$refs[ref].open();
                           break;
 

@@ -21,6 +21,8 @@ Route::group([ 'namespace' => 'Api' ], function (Router $router) {
         $router->post('sign', [ 'uses' => 'SignController@sign' ]);
         $router->get('signers', [ 'uses' => 'SignController@getSignersByDepartment' ]);
         $router->delete('signer', [ 'uses' => 'SignController@deleteSignersById' ]);
+        $router->put('signer', [ 'uses' => 'SignController@restoreSignerStatus' ]);
+
         // 登录
         $router->post('interview', 'InterviewController@postLogin');
 
@@ -54,6 +56,7 @@ Route::group(['prefix' => 'apply'], function (Router $router) {
 Route::group(['prefix' => 'auth'], function (Router $router) use ($app) {
 
     $router->group([ 'namespace' => 'Auth' ], function (Router $router) use ($app) {
+        $router->get('/', 'AuthController@getLogin');
         $router->get('login', 'AuthController@getLogin');
         $router->post('login', 'AuthController@postLogin');
         $router->get('logout', 'AuthController@getLogout');
