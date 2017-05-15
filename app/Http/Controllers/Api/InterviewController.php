@@ -121,6 +121,8 @@ class InterviewController extends ApiController
      */
     public function postSearch(Request $request)
     {
+        $auth = \JWTAuth::parseToken()->toUser()->toArray();
+
         $this->validate($request, [
             'student_id' => 'required | digits:10',
             'department' => 'required | string | in:' . implode(',', self::$department),
@@ -136,6 +138,13 @@ class InterviewController extends ApiController
             $signerObject->save();
             // 广播前台更新队列
             $this->eventUpdateSignerList(app(SignController::class)->getSignersArray());
+            // 广播前台更新消息
+            $this->eventMessageFire([
+                'unique_id' => $auth['unique_id'],
+                'department' => $auth['department'],
+                'number' => $auth['number'],
+                'msg' => sprintf('通知%s的%s到 %s %d', $parameters['department'], $parameters['name'], $auth['department'], $auth['number']),
+            ]);
             return $this->respondWith($signerObject, new SignTransformer());
         }
 
