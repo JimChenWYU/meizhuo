@@ -40,7 +40,7 @@
                         <md-table-cell>{{ $person['department'] }}</md-table-cell>
                         <md-table-cell>{{ $person['created_at'] }}</md-table-cell>
                         @if(isset($person['has_apply']) && $person['has_apply'] == 0)
-                        <md-button disabled="disabled" class="md-raised md-primary">详情</md-button>
+                        <md-button disabled="disabled" class="md-raised md-primary">线下报名</md-button>
                         @else
                         <md-button href="{{ url('/auth/person/' . $person['id']) }}" class="md-raised md-primary">详情</md-button>
                         @endif

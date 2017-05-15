@@ -28,7 +28,7 @@
             {{--</a>--}}
             {{--</md-list-item>--}}
             <md-list-item>
-                <md-icon>people</md-icon>
+                <md-icon>list</md-icon>
                 <span>所有报名同学查看</span>
                 <md-list-expand>
                     <md-list>
@@ -71,7 +71,7 @@
             </md-list-item>
 
             <md-list-item>
-                <md-icon>assignment_ind</md-icon>
+                <md-icon>list</md-icon>
                 <span>所有面试同学查看</span>
                 <md-list-expand>
                     <md-list>
@@ -114,7 +114,7 @@
             </md-list-item>
 
             <md-list-item>
-                <md-icon>assignment_ind</md-icon>
+                <md-icon>list</md-icon>
                 <span>管理面试官</span>
 
                 <md-list-expand>
