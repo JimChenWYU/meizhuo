@@ -36,18 +36,17 @@ $ cp .env.example .env
 ```
 
 根据自己环境配置config.json文件,
-**注意: `dev`为开发环境路径，`prod`为生成环境路径， `request_url`不要改！**
+**注意: `dev`为开发环境路径，`prod`为生产环境路径， `request_url`不要改！**
 ```git
 $ cd resources/assets/js/config/
-$ subl config.json
+$ cp config.example.json config.json
 ```
 配置webSocket服务器,
 **注意：`httpServer`为监听webSocket服务器地址和端口，`redis`为你的redis地址和端口**
 ```git
-$ cd webSocketServer
-$ cp env.example.json env.json
+$ cp webSocketServer/env.example.json webSocketServer/env.json
 ```
-配置之后编译前端资源
+配置之后编译前端资源(开发环境版本)
 ```git
 $ npm run dev
 ```
