@@ -51,7 +51,10 @@ $ cp env.example.json env.json
 ```git
 $ npm run dev
 ```
-
+打开webSocket
+```git
+$ npm run start
+```
 至此打开你的服务器，建议使用 [homestead](https://github.com/laravel/homestead) 虚拟机，查看[路由文件](app/Http/routes.php)即可知道访问路径，生产环境下大同小异，注意权限分配即可。
 
 如有疑问可以邮件联系或提issues：[18219111672@163.com](mailto://18219111672@163.com)
