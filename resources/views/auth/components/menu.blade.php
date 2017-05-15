@@ -19,8 +19,8 @@
     </md-toolbar>
 
     <div class="main-sidebar-links">
-        <md-list class="md-double-line md-dense">
-            <md-subheader>Navigation</md-subheader>
+        <md-list class="md-dense">
+            <md-subheader>管理后台菜单</md-subheader>
 
             {{--<md-list-item v-for="p of permission" v-if="p.isPermit">--}}
             {{--<a href="" class="md-list-item-container md-button router-link-active">--}}
@@ -28,47 +28,62 @@
             {{--</a>--}}
             {{--</md-list-item>--}}
             <md-list-item>
-                <a href="{{ url('/auth/home') }}"
-                   class="md-list-item-container md-button {{ !isset($all) ?:'router-link-active' }}">
-                    <md-icon>send</md-icon>&nbsp;<span>所有人</span>
-                </a>
+                <md-icon>people</md-icon>
+                <span>所有报名同学查看</span>
+                <md-list-expand>
+                    <md-list>
+                        <md-list-item>
+                            <a href="{{ url('/auth/home') }}"
+                               class="md-list-item-container md-button {{ !isset($all) ?:'router-link-active' }}">
+                                <span>所有人</span>
+                            </a>
+                        </md-list-item>
+
+                        <md-list-item>
+                            <a href="{{ url('/auth/android') }}"
+                               class="md-list-item-container md-button {{ !isset($android) ?:'router-link-active' }}">
+                                <span>移动组</span>
+                            </a>
+                        </md-list-item>
+
+                        <md-list-item>
+                            <a href="{{ url('/auth/web') }}"
+                               class="md-list-item-container md-button {{ !isset($web) ?:'router-link-active' }}">
+                                <span>Web组</span>
+                            </a>
+                        </md-list-item>
+
+                        <md-list-item>
+                            <a href="{{ url('/auth/design') }}"
+                               class="md-list-item-container md-button {{ !isset($design) ?:'router-link-active' }}">
+                                <span>美工组</span>
+                            </a>
+                        </md-list-item>
+
+                        <md-list-item>
+                            <a href="{{ url('/auth/marking') }}"
+                               class="md-list-item-container md-button {{ !isset($marking) ?:'router-link-active' }}">
+                                <span>营销策划</span>
+                            </a>
+                        </md-list-item>
+                    </md-list>
+                </md-list-expand>
             </md-list-item>
 
             <md-list-item>
-                <a href="{{ url('/auth/android') }}"
-                   class="md-list-item-container md-button {{ !isset($android) ?:'router-link-active' }}">
-                    <md-icon>send</md-icon>&nbsp;<span>移动组</span>
-                </a>
-            </md-list-item>
+                <md-icon>assignment_ind</md-icon>
+                <span>管理面试官</span>
 
-            <md-list-item>
-                <a href="{{ url('/auth/web') }}"
-                   class="md-list-item-container md-button {{ !isset($web) ?:'router-link-active' }}">
-                    <md-icon>send</md-icon>&nbsp;<span>Web组</span>
-                </a>
-            </md-list-item>
-
-            <md-list-item>
-                <a href="{{ url('/auth/design') }}"
-                   class="md-list-item-container md-button {{ !isset($design) ?:'router-link-active' }}">
-                    <md-icon>send</md-icon>&nbsp;<span>美工组</span>
-                </a>
-            </md-list-item>
-
-            <md-list-item>
-                <a href="{{ url('/auth/marking') }}"
-                   class="md-list-item-container md-button {{ !isset($marking) ?:'router-link-active' }}">
-                    <md-icon>send</md-icon>&nbsp;<span>营销策划</span>
-                </a>
-            </md-list-item>
-
-            <md-subheader>管理</md-subheader>
-
-            <md-list-item>
-                <a href="{{ url('/auth/interviewer') }}"
-                   class="md-list-item-container md-button {{ !isset($interview) ?:'router-link-active' }}">
-                    <md-icon>send</md-icon>&nbsp;<span>强制面试官退出</span>
-                </a>
+                <md-list-expand>
+                    <md-list>
+                        <md-list-item>
+                            <a href="{{ url('/auth/interviewer') }}"
+                               class="md-list-item-container md-button {{ !isset($interview) ?:'router-link-active' }}">
+                                <span>强制面试官退出</span>
+                            </a>
+                        </md-list-item>
+                    </md-list>
+                </md-list-expand>
             </md-list-item>
         </md-list>
     </div>
