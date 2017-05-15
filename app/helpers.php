@@ -9,7 +9,7 @@
 if (! function_exists('mix')) {
     /**
      * Get the path to a versioned Mix file.
-     *
+     * 从 mix-manifest 文件获取路径
      * @param $file
      * @return mixed
      *
@@ -19,6 +19,7 @@ if (! function_exists('mix')) {
     {
         static $manifest = null;
 
+        // 从public目录下读取 mix-manifest.json 文件
         if (is_null($manifest)) {
             $manifest = json_decode(file_get_contents(public_path('mix-manifest.json')), true);
         }

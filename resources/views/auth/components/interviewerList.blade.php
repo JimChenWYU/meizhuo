@@ -29,7 +29,7 @@
                         <md-table-cell>{{ $perGroup['unique_id'] }}</md-table-cell>
                         @if(is_null($perGroup['unique_id'])
                             || empty($perGroup['unique_id'])
-                            || $perGroup['is_login'] != 0)
+                            || $perGroup['is_login'] == 0)
                             <md-button disabled="disabled" class="md-raised md-warn" type="button">
                                 强制退出</md-button>
                         @else

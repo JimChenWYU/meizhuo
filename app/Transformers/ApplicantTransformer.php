@@ -7,6 +7,11 @@ use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 
+/**
+ * Class ApplicantTransformer
+ * 转换器，负责报名者相关接口数据返回的转换
+ * @package App\Transformers
+ */
 class ApplicantTransformer extends TransformerAbstract
 {
     /**

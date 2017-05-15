@@ -7,6 +7,11 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Middleware\BaseMiddleware;
 
+/**
+ * Class GetUserFromToken
+ * 登陆Token中间件处理
+ * @package App\Http\Middleware
+ */
 class GetUserFromToken extends BaseMiddleware
 {
     /**
@@ -24,12 +29,15 @@ class GetUserFromToken extends BaseMiddleware
 
         try {
             $user = $this->auth->toUser($token);
-        } catch (TokenExpiredException $e) {
+        } catch (TokenExpiredException $e) /* 过期处理 */{
             return $this->respond('tymon.jwt.expired', 'token_expired', $e->getStatusCode(), [$e]);
-        } catch (JWTException $e) {
+        } catch (JWTException $e) /* 其他错误处理 */{
             return $this->respond('tymon.jwt.invalid', 'token_invalid', $e->getStatusCode(), [$e]);
         }
 
+        /**
+         * Token 无法解析出对应用户处理
+         */
         if (! $user) {
             return $this->respond('tymon.jwt.user_not_found', 'user_not_found', 404);
         }

@@ -12,9 +12,8 @@ use Response;
 
 /**
  * Class ApiController
+ * Api基础控制器
  * @package App\Http\Controllers\Api
- * @author Jim Chen <18219111672@163.com>
- * @copyright 2017
  */
 class ApiController extends Controller
 {
@@ -45,6 +44,8 @@ class ApiController extends Controller
     const CODE_FORBIDDEN = 'ERR-FORBIDDEN';
 
     /**
+     * 获取状态码
+     *
      * @return int
      */
     public function getStatusCode()
@@ -53,7 +54,7 @@ class ApiController extends Controller
     }
 
     /**
-     *
+     * 设置状态码
      *
      * @param $statusCode
      * @return $this

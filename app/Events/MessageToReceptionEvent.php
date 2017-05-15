@@ -6,6 +6,11 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+/**
+ * Class MessageToReceptionEvent
+ * 广播通知前台工作人员
+ * @package App\Events
+ */
 class MessageToReceptionEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels, EventSettings;

@@ -6,6 +6,11 @@ use App\Applicant;
 use App\Signer;
 use Illuminate\Http\Request;
 
+/**
+ * Class SignController
+ * 签到者控制器
+ * @package App\Http\Controllers\Api
+ */
 class SignController extends ApiController
 {
     use Condition;
@@ -97,6 +102,15 @@ class SignController extends ApiController
             'marking' => [],
         ];
 
+        /**
+         * 对$list分组处理，返回$groupByDepartment格式
+         * [
+         *      'android' => [],
+         *      'web' => [],
+         *      'design' => [],
+         *      'marking' => [],
+         * ]
+         */
         array_walk($list, function ($arr) use (&$groupByDepartment){
             switch ($arr['department']) {
                 case self::$group['android']:

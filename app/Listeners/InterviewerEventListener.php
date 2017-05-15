@@ -8,6 +8,11 @@ use App\Events\InterviewerLogoutEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+/**
+ * Class InterviewerEventListener
+ * 面试官事件监听
+ * @package App\Listeners
+ */
 class InterviewerEventListener
 {
     /**
@@ -28,7 +33,7 @@ class InterviewerEventListener
      */
     public function handle(InterviewerEvent $event)
     {
-        //
+        // 日志记录
         if ($event instanceof InterviewerLoginEvent) {
             app('log')->info('interviewer login : ' . json_encode($event->group));
         } else if ($event instanceof InterviewerLogoutEvent) {

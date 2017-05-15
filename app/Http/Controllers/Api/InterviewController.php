@@ -13,10 +13,21 @@ use App\Transformers\ApplicantTransformer;
 use App\Transformers\SignTransformer;
 use Illuminate\Http\Request;
 
+/**
+ * Class InterviewController
+ * 面试官控制器
+ * @package App\Http\Controllers\Api
+ */
 class InterviewController extends ApiController
 {
     use Condition;
 
+    /**
+     * 面试官登陆
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function postLogin(Request $request)
     {
         $this->validate($request, [
@@ -75,6 +86,11 @@ class InterviewController extends ApiController
         return $this->respondWithError('登录失败！', 400);
     }
 
+    /**
+     * 面试官退出
+     *
+     * @return \Response
+     */
     public function getLogout()
     {
         $parameters = \JWTAuth::parseToken()->toUser()->toArray();
@@ -98,7 +114,7 @@ class InterviewController extends ApiController
     }
 
     /**
-     * 搜索
+     * 面试官搜索签到同学
      *
      * @param Request $request
      * @return \Response
@@ -223,6 +239,9 @@ class InterviewController extends ApiController
         event(new UpdateSignerListEvent($dataList));
     }
 
+    /**
+     * 测试Token，生产环境可忽视
+     */
     public function testToken()
     {
         $payload = \JWTAuth::parseToken()->toUser()->toArray();

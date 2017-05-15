@@ -8,7 +8,11 @@
 
 namespace App\Http\Controllers\Api;
 
-
+/**
+ * Class Condition
+ * Api常用变量或方法配置
+ * @package App\Http\Controllers\Api
+ */
 trait Condition
 {
     public static $grade = [ '大一', '大二' ];
@@ -47,6 +51,11 @@ trait Condition
         'marking' => '营销策划',
     ];
 
+    /**
+     * 签到者模板数组
+     *
+     * @return array
+     */
     public function signTemplate()
     {
         static $template = [
@@ -65,6 +74,11 @@ trait Condition
         return $template;
     }
 
+    /**
+     * 接受字段数组
+     *
+     * @return array
+     */
     public function acceptParameters()
     {
         static $template = [

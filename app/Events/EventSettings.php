@@ -8,7 +8,11 @@
 
 namespace App\Events;
 
-
+/**
+ * Class EventSettings
+ * 事件的设置，比如频道的设置
+ * @package App\Events
+ */
 trait EventSettings
 {
     protected $postLoginChannel = 'interviewerPostLoginChannel';

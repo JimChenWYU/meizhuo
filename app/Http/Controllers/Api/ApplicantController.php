@@ -6,19 +6,26 @@ use App\Applicant;
 use App\Transformers\ApplicantTransformer;
 use Illuminate\Http\Request;
 
-
+/**
+ * Class ApplicantController
+ * 报名者控制器
+ * @package App\Http\Controllers\Api
+ */
 class ApplicantController extends ApiController
 {
     use Condition;
     /**
-     * Store a newly created resource in storage.
+     * 报名api
      *
      * @param Request $request
      * @return \Response
      */
     public function store(Request $request)
     {
-        //
+        if (env('APP_DOWN_SIGN', false)) {
+            return $this->respondWithMsg('报名已结束');
+        }
+        // 验证
         $this->validate($request, [
             'student_id' => 'required | digits:10',
             'name' => 'required | string | max:8',
@@ -29,6 +36,7 @@ class ApplicantController extends ApiController
             'introduce' => 'string | max:300'
         ], self::$message);
 
+        // 通过model类保存
         $signer = new Applicant();
         $signer->setAttributes($parameters = $request->only($this->acceptParameters()));
         if (is_null($first = Applicant::whereStudentId($parameters['student_id'])

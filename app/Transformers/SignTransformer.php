@@ -7,6 +7,11 @@ use League\Fractal\TransformerAbstract;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 
+/**
+ * Class SignTransformer
+ * 转换器，负责签到者相关接口返回的转换
+ * @package App\Transformers
+ */
 class SignTransformer extends TransformerAbstract
 {
     /**

@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+/**
+ * Class SignSystemController
+ * 前台签到系统控制器
+ * @package App\Http\Controllers
+ */
 class SignSystemController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 首页展示
      *
      * @return \Illuminate\Http\Response
      */

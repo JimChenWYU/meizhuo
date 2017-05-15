@@ -6,6 +6,11 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+/**
+ * Class UpdateSignerListEvent
+ * 广播更新前台签到者列表信息
+ * @package App\Events
+ */
 class UpdateSignerListEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels, EventSettings;
