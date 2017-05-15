@@ -143,7 +143,7 @@ class InterviewController extends ApiController
                 'unique_id' => $auth['unique_id'],
                 'department' => $auth['department'],
                 'number' => $auth['number'],
-                'msg' => sprintf('通知%s的%s到 %s %d', $parameters['department'], $parameters['name'], $auth['department'], $auth['number']),
+                'msg' => sprintf('通知%s的%s到 %s %d', $signerObject->department, $signerObject->name, $auth['department'], $auth['number']),
             ]);
             return $this->respondWith($signerObject, new SignTransformer());
         }
