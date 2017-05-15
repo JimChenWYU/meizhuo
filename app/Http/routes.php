@@ -43,7 +43,7 @@ Route::group([ 'namespace' => 'Api' ], function (Router $router) {
         $router->get('interview/', 'InterviewController@getLogout')->middleware('jwt.auth');
 
         // 面试官搜索路由
-        $router->post('interview/search', 'InterviewController@postSearch');
+        $router->post('interview/search', 'InterviewController@postSearch')->middleware('jwt.auth');
 
         // 面试官获取签到者路由
         $router->get('interview/signer', 'InterviewController@getSigner')->middleware('jwt.auth');
