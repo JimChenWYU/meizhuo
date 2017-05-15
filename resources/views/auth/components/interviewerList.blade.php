@@ -37,9 +37,9 @@
                                        type="button"
                                        @click.native="confirmForce()">强制退出</md-button>
 
-                            <form action="{{ url('/auth/interviewer/' . $perGroup['unique_id']) }}" method="post">
+                            <form action="{{ url('/auth/interviewer/' . $perGroup['id']) }}" method="post">
                                 {{ csrf_field() }}
-                                <input type="hidden" value="{{ $perGroup['unique_id'] }}" name="unique_id" />
+                                <input type="hidden" value="{{ $perGroup['id'] }}" name="id" />
                                 <md-button
                                         id="true-submit"
                                         style="display: none"

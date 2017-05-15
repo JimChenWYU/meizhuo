@@ -139,9 +139,9 @@ class ManagerController extends Controller
     public function forceLogout($id)
     {
         if ($id) {
-            $group = Group::where('unique_id', $id)->first();
+            $group = Group::where('id', $id)->first();
 
-            Group::where('unique_id', $id)->update([
+            Group::where('id', $id)->update([
                 'unique_id' => '',
                 'is_login' => 0
             ]);
