@@ -132,6 +132,8 @@ class InterviewController extends ApiController
             ->whereRaw(sprintf("LOCATE('%s', student_id) > 0", $parameters['student_id']))->first();
 
         if (!is_null($signerObject)) {
+            $signerObject->status = 3;
+            $signerObject->save();
             return $this->respondWith($signerObject, new SignTransformer());
         }
 
@@ -139,7 +141,8 @@ class InterviewController extends ApiController
             ->whereRaw(sprintf("LOCATE('%s', student_id) > 0", $parameters['student_id']))->first();
 
         if (!is_null($signerObject)) {
-            return $this->respondWith($signerObject, new ApplicantTransformer);
+            $signerObject->has_apply = 1;
+            return $this->respondWith($signerObject, new SignTransformer);
         }
 
         return $this->setStatusCode(404)->respondWithMsg('没有该同学记录');

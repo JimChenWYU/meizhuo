@@ -58,4 +58,7 @@ $ npm run start
 
 如有疑问可以邮件联系或提issues：[18219111672@163.com](mailto://18219111672@163.com)
 
+### BUG修复
+~~代号x0000001:面试官搜索之后开始面试，面试者状态没有改变~~
+
 [MIT license](http://opensource.org/licenses/MIT)
