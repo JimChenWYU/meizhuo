@@ -72,6 +72,49 @@
 
             <md-list-item>
                 <md-icon>assignment_ind</md-icon>
+                <span>所有面试同学查看</span>
+                <md-list-expand>
+                    <md-list>
+                        <md-list-item>
+                            <a href="{{ url('/auth/signer/') }}"
+                               class="md-list-item-container md-button {{ !isset($sign_all) ?:'router-link-active' }}">
+                                <span>所有人</span>
+                            </a>
+                        </md-list-item>
+
+                        <md-list-item>
+                            <a href="{{ url('/auth/signer/android') }}"
+                               class="md-list-item-container md-button {{ !isset($sign_android) ?:'router-link-active' }}">
+                                <span>移动组</span>
+                            </a>
+                        </md-list-item>
+
+                        <md-list-item>
+                            <a href="{{ url('/auth/signer/web') }}"
+                               class="md-list-item-container md-button {{ !isset($sign_web) ?:'router-link-active' }}">
+                                <span>Web组</span>
+                            </a>
+                        </md-list-item>
+
+                        <md-list-item>
+                            <a href="{{ url('/auth/signer/design') }}"
+                               class="md-list-item-container md-button {{ !isset($sign_design) ?:'router-link-active' }}">
+                                <span>美工组</span>
+                            </a>
+                        </md-list-item>
+
+                        <md-list-item>
+                            <a href="{{ url('/auth/signer/marking') }}"
+                               class="md-list-item-container md-button {{ !isset($sign_marking) ?:'router-link-active' }}">
+                                <span>营销策划</span>
+                            </a>
+                        </md-list-item>
+                    </md-list>
+                </md-list-expand>
+            </md-list-item>
+
+            <md-list-item>
+                <md-icon>assignment_ind</md-icon>
                 <span>管理面试官</span>
 
                 <md-list-expand>

@@ -108,6 +108,17 @@ Route::group(['prefix' => 'auth'], function (Router $router) use ($app) {
     $router->get('search', 'ManagerController@getSearch');
     $router->post('search', 'ManagerController@postSearch');
 
+    // 管理面试同学路由
+    $router->group([ 'prefix' => 'signer' ], function (Router $router) {
+        $router->get('/', 'ManagerController@signer');
+        $router->get('android', 'ManagerController@signerFromAndroid');
+        $router->get('web', 'ManagerController@signerFromWeb');
+        $router->get('design', 'ManagerController@signerFromDesign');
+        $router->get('marking', 'ManagerController@signerFromMarking');
+        $router->get('search', 'ManagerController@getSearchSigner');
+        $router->post('search', 'ManagerController@postSearchSigner');
+    });
+
     // 管理面试官路由
     $router->get('interviewer', 'ManagerController@interviewer');
     $router->post('interviewer/{unique_id}', 'ManagerController@forceLogout')->where('id', '[0-9]+');

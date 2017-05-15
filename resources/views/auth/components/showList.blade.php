@@ -1,4 +1,8 @@
-@include('auth.components.search')
+@if(isset($settings['root']) && $settings['root'] == 'auth.signer')
+@include('auth.components.searchSigner')
+@elseif(isset($settings['root']) && $settings['root'] == 'auth.applicant')
+@include('auth.components.searchApplicant')
+@endif
 
 <div class="container-list">
     <md-table-card class="main-content">
@@ -35,7 +39,11 @@
                         <md-table-cell>{{ $person['grade'] }}</md-table-cell>
                         <md-table-cell>{{ $person['department'] }}</md-table-cell>
                         <md-table-cell>{{ $person['created_at'] }}</md-table-cell>
+                        @if(isset($person['has_apply']) && $person['has_apply'] == 0)
+                        <md-button disabled="disabled" class="md-raised md-primary">详情</md-button>
+                        @else
                         <md-button href="{{ url('/auth/person/' . $person['id']) }}" class="md-raised md-primary">详情</md-button>
+                        @endif
                     </md-table-row>
                 @endforeach
             </md-table-body>
