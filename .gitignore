@@ -4,3 +4,8 @@
 Homestead.yaml
 Homestead.json
 .env
+.phpstorm.meta.php
+_ide_helper.php
+mz_db.sql
+webhook.php
+webSocketServer
