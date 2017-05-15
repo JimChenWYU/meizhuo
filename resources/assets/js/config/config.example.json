@@ -1,12 +1,12 @@
 {
     "url": {
         "base_url": {
-            "dev": "http://meizhuo.app",
-            "prod": "http://meizhuo.chenjunwu.cn"
+            "dev": "",
+            "prod": ""
         },
         "base_socket_url": {
-            "dev": "ws://127.0.0.1:3001",
-            "prod": "ws://119.29.244.34:3001/"
+            "dev": "",
+            "prod": ""
         },
         "request_url": {
             "apply": "/api/v1/apply",
