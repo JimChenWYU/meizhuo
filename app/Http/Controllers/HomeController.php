@@ -32,7 +32,7 @@ class HomeController extends Controller
      */
     public function apply()
     {
-        if (env('APP_DOWN_SIGN', false)) {
+        if (env('APP_DOWN_APPLY', false)) {
             return view('errors.endSign');
         } else {
             return view('home.apply');

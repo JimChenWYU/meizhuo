@@ -22,7 +22,7 @@ class ApplicantController extends ApiController
      */
     public function store(Request $request)
     {
-        if (env('APP_DOWN_SIGN', false)) {
+        if (env('APP_DOWN_APPLY', false)) {
             return $this->respondWithMsg('报名已结束');
         }
         // 验证
