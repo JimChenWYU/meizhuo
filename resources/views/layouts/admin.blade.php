@@ -37,6 +37,9 @@
 <script src="https://unpkg.com/vue-material@0.7.1" crossorigin="anonymous"></script>
 {{--<script src="https://cdn.bootcss.com/socket.io/1.7.4/socket.io.min.js" crossorigin="anonymous"></script>--}}
 {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+@if(config('app.debug'))
+<script src="http://localhost:35729/livereload.js?snipver=1.0.0"></script>
+@endif
 <script>
     Vue.use(VueMaterial)
 

@@ -23,7 +23,7 @@
 <script src="{{ mix('/js/manifest.js') }}"></script>
 <script src="{{ mix('/js/vendor.js') }}"></script>
 <script src="{{ mix('/js/main.js') }}"></script>
-@if(config('app.env') != 'production')
+@if(config('app.debug'))
 <script src="http://localhost:35729/livereload.js?snipver=1.0.0"></script>
 @endif
 {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
