@@ -134,6 +134,8 @@ class InterviewController extends ApiController
         if (!is_null($signerObject)) {
             $signerObject->status = 3;
             $signerObject->save();
+            // 广播前台更新队列
+            $this->eventUpdateSignerList(app(SignController::class)->getSignersArray());
             return $this->respondWith($signerObject, new SignTransformer());
         }
 
