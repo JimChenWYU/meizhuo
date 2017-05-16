@@ -10,10 +10,7 @@
   "devDependencies": {
     "axios": "^0.16.0",
     "babel-loader": "^7.0.0",
-    "bootstrap-sass": "^3.0.0",
     "css-loader": "^0.28.0",
-    "gulp": "^3.8.8",
-    "laravel-elixir": "^4.0.0",
     "laravel-mix": "^0.10.0",
     "shelljs": "^0.7.7",
     "style-loader": "^0.16.1",
@@ -27,8 +24,15 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "compression-webpack-plugin": "^0.4.0",
     "ioredis": "^2.5.0",
     "socket.io": "^2.0.1",
     "socket.io-client": "^1.6.0"
-  }
+  },
+  "name": "meizhuo",
+  "version": "1.0.0",
+  "description": "袂卓招新报名系统",
+  "repository": "git@github.com:JimChenWYU/meizhuo.git",
+  "author": "JimChen <18219111672@163.com>",
+  "license": "MIT"
 }

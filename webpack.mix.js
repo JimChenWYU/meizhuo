@@ -4,6 +4,7 @@ const { mix, config } = require('laravel-mix')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 // console.log(path.resolve(__dirname, 'resources/assets'))
 
@@ -40,13 +41,23 @@ const dev = {
 
 // 生产环境下配置
 const prod = {
-  devtool: '#source-map',
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
+      comments: false,
+      sourceMap: true,
       compress: {
-        warnings: false,
-        drop_console: false,
+          warnings: false,
+          drop_console: true
       }
+    }),
+    new CompressionWebpackPlugin({ //gzip 压缩
+        asset: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: new RegExp(
+            '\\.(js|css)$'    //压缩 js 与 css
+        ),
+        threshold: 10240,
+        minRatio: 0.8
     })
   ]
 }
@@ -84,4 +95,4 @@ mix.copy('resources/assets/images/', 'public/images')
     .js('resources/assets/js/main.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
     .sass('resources/assets/sass/admin.scss', 'public/css')
-    .extract(['vue', 'vue-material', 'vue-router', 'axios', 'vuerify', 'vue-socket.io', 'lodash'])
+    .extract(['vue', 'vue-material', 'vue-router', 'axios', 'vuerify', 'vue-socket.io', 'lodash/isFunction', 'lodash/isEmpty', 'lodash/isUndefined', 'lodash/uniqueId'])
