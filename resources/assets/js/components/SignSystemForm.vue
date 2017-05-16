@@ -56,7 +56,7 @@
           <md-layout></md-layout>
           <md-layout md-flex="80">
             <md-button class="md-raised md-primary" type="submit" md-fab-bottom-center :disabled="!isCanSubmit">签到</md-button>
-            <md-button class="md-raised md-warn" type="button" md-fab-bottom-center :disabled="!isCanUpdate" @click.native="update()">刷新</md-button>
+            <md-button class="md-raised md-warn" type="button" md-fab-bottom-center :disabled="!isCanUpdate" @click.native="refresh()">刷新</md-button>
           </md-layout>
         </md-layout>
       </form>
@@ -230,7 +230,7 @@
       </md-layout>
     </section>
 
-    <section><IM :unique_id_key="unique_id_key"></IM></section>
+    <section><IM></IM></section>
 
     <md-dialog-confirm
         :md-content-html="confirm.contentHtml"
@@ -425,7 +425,7 @@
                           this.isCanSubmit = true;
                           this.openDialog('tip', () => {
                               if (this._.isUndefined(response.data.error)) {
-                                  this.lineUp = response.data
+                                  this.updateList(response.data)
                                   this.alert = {
                                       content: `${this.userData.department} 签到成功！`,
                                       ok: '确定'
@@ -461,7 +461,7 @@
                                   })
                                   return
                               }
-                              this.lineUp = response.data
+                              this.updateList(response.data)
                           }).catch(error => {
                               console.log(error)
                               if (error.data.error) {
@@ -488,7 +488,7 @@
                                   })
                                   return
                               }
-                              this.lineUp = response.data
+                              this.updateList(response.data)
                           }).catch(error => {
                               console.log(error)
                               if (error.data.error) {
@@ -501,18 +501,16 @@
                   }
               },
 
-              auth() {
+              auth(id) {
                   let name = "Manager";
                   if (name) {
-                      this.unique_id = this._.uniqueId(new Date().getTime())
+                      this.unique_id = id
                       let loginInfo = {
                           unique_id: this.unique_id,
                           department: name,
                           number: this._.uniqueId(this._.random(0, 100))
                       }
                       this.$socket.emit('receptionLogin', loginInfo)
-                      this.unique_id_key = this._.uniqueId(new Date().getTime())
-                      this.setItem(this.unique_id_key, this.unique_id)
                   } else {
                       let opened = window.open('about:blank','_self');
                       opened.opener=null;
@@ -546,16 +544,21 @@
                   }
               },
 
-              update() {
+              refresh() {
                   this.isCanUpdate = false
                   this.$http.get(this.$url.signers)
                       .then(response => {
-                          this.lineUp = response.data
+                          this.updateList(response.data)
                           this.isCanUpdate = true
                       })
                       .catch(error => {
                           this.isCanUpdate = true
                       })
+              },
+
+              updateList(dataList) {
+//                  this.lineUp = dataList;
+                  this.$socket.emit('updateList', dataList)
               },
 
               onConfirmClose(type) {
@@ -586,15 +589,15 @@
               }
           },
 
-          created() {
-              this.auth()
-          },
-
           mounted() {
-              this.update()
+              this.refresh()
           },
 
           sockets: {
+              connect() {
+                  console.log('signSystem-socket_id: ' + this.$socket.id)
+                  this.auth(this.$socket.id)
+              },
               updateSignerListChannel(dataList) {
                   this.lineUp = dataList
               },

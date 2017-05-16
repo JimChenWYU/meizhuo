@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="space">
-      <navbar class="md-accent" title="欢迎面试官"></navbar>
+      <navbar class="md-accent" :title="title" style="text-align: center"></navbar>
     </section>
 
     <section class="padding-left-right-30px">
@@ -78,14 +78,20 @@
         <md-layout>
             <md-layout md-column>
               <md-button :disabled="!isCanLogout"
-                      class="md-raised md-warn" @click.native="logout()">退出</md-button></md-layout>
-          <md-layout md-column>
+                      class="md-raised md-warn" @click.native="logout()">退出</md-button>
+            </md-layout>
+            <md-layout md-column>
               <md-button :disabled="!isCanLogout"
-                      class="md-raised md-accent" @click.native="openDialog('confirmNext')">{{ buttonTip }}</md-button></md-layout>
+                         class="md-raised md-warn" @click.native="clean()">清空</md-button>
+            </md-layout>
+            <md-layout md-column>
+                <md-button :disabled="!isCanLogout"
+                        class="md-raised md-accent" @click.native="openDialog('confirmNext')">{{ buttonTip }}</md-button>
+            </md-layout>
         </md-layout>
     </section>
 
-    <section><IM :unique_id_key="unique_id_key"></IM></section>
+    <section><IM></IM></section>
 
     <md-snackbar md-position="top center" ref="not_search" md-duration="4000">
       <span>搜索不到！</span>
@@ -99,7 +105,7 @@
     <md-dialog-alert
             :md-content="alert.content"
             :md-ok-text="alert.ok"
-            @close="onClose"
+            @close="onLogout"
             ref="alert">
     </md-dialog-alert>
 
@@ -143,10 +149,9 @@
         data() {
             return {
 
+                title: '欢迎面试官',
                 search_student_id: '',
                 search_department: '',
-
-                unique_id_key: '',
 
                 error: '',
                 isCanLogout: true,
@@ -245,7 +250,7 @@
                         }
                         this.isCanLogout = true
 //                        window.location.reload()
-                        this.$router.push({ name: 'interview.login' })
+                        this.onLogout()
                     })
                     .catch(error => {
                         if (error.data.error) {
@@ -254,6 +259,10 @@
                         }
                         window.location.reload()
                     })
+            },
+
+            clean() {
+                this.person = {}
             },
 
             begin() {
@@ -307,27 +316,26 @@
                 }
             },
 
-            onClose(type) {
+            onLogout() {
 //                console.log(type)
-                this.$router.push({ name: 'interview.login' })
+                this.isCanLogout = false
+                window.location.href = '/interview'
             },
 
             validateAuth() {
                 let auth = this.$route.params
-                if (this._.isUndefined(auth) || !auth.unique_id_key) {
+                this.title = `欢迎面试官，这里是 ${auth.department} ${auth.number}`
+                if (this._.isUndefined(auth) || !auth.unique_id) {
                     this.$socket.emit('interviewLogout');
-                    this.$router.push({ name: 'interview.login'})
+                    this.onLogout()
                 }
-//                console.log(`home: ${auth.unique_id_key}`)
-//                console.log(`home: ${this.getItem(auth.unique_id_key)}`)
-                this.unique_id_key = auth.unique_id_key
             },
         },
 
         sockets: {
             logout(interviewer) {
-//                console.log(interviewer)
-                if (this.getItem(this.unique_id_key) == interviewer.unique_id) {
+                console.log(`${interviewer.unique_id}   ${this.$socket.id}`)
+                if (this.$socket.id == interviewer.unique_id) {
                     this.openDialog('alert', () => {
                         this.alert = {
                             ok: '确定',

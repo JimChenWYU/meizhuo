@@ -1,9 +1,9 @@
+require('shelljs/global')
 const path = require('path')
 const { mix, config } = require('laravel-mix')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
-const env = process.env.NODE_ENV
 
 // console.log(path.resolve(__dirname, 'resources/assets'))
 
@@ -67,6 +67,17 @@ mix.webpackConfig(WebpackConfig());
  | file for the application as well as bundling up all the JS files.
  |
  */
+if (config.inProduction) {
+    rm('-rf', 'public/css');
+    rm('-rf', 'public/js');
+    console.log(
+        '  Tip: Built with production are meant to be served over your server.\n'
+    )
+
+    mix.version();
+    mix.sourceMaps();
+}
+
 mix.copy('resources/assets/images/', 'public/images')
     .copy('node_modules/vue/dist/vue.common.js', 'public/js')
     .copy('node_modules/vue-material/dist/vue-material.js', 'public/js')
@@ -74,8 +85,3 @@ mix.copy('resources/assets/images/', 'public/images')
     .sass('resources/assets/sass/app.scss', 'public/css')
     .sass('resources/assets/sass/admin.scss', 'public/css')
     .extract(['vue', 'vue-material', 'vue-router', 'axios', 'vuerify', 'vue-socket.io', 'lodash'])
-
-if (config.inProduction) {
-    mix.version();
-    mix.sourceMaps();
-}

@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="space">
-      <navbar class="md-accent" title="面试官认证"></navbar>
+      <navbar class="md-accent" title="面试官认证" style="text-align: center"></navbar>
     </section>
 
     <section>
@@ -71,7 +71,6 @@
 
       <md-snackbar md-position="top center" ref="snackbar" md-duration="4000">
         <span>{{ error.msg }}</span>
-        <md-button class="md-accent" md-theme="light-blue" @click.native="submit()">Retry</md-button>
       </md-snackbar>
     </section>
   </div>
@@ -87,7 +86,9 @@
         components: {
             Navbar
         },
+
         replace: false,
+
         data() {
             return {
                 unique_id_key: '',
@@ -101,7 +102,7 @@
                     ok: '确定'
                 },
                 confirm: {
-                    contentHtml: `<h3>您确认提交信息吗？</h3>`,
+                    contentHtml: '<h3>您确认提交信息吗？</h3>',
                     ok: '确定',
                     cancel: '取消'
                 },
@@ -134,21 +135,12 @@
 
             validate() {
                 return this.$vuerify.check()
-            },
-
-            authFlag() {
-                return {
-                    unique_id_key: this.unique_id_key
-                }
             }
         },
 
         methods: {
             submit() {
                 this.isCanSubmit = false
-                this.unique_id = this._.uniqueId(new Date().getTime())
-                this.unique_id_key = this._.uniqueId(new Date().getTime())
-                this.setItem(this.unique_id_key, this.unique_id)
                 this.$http.post(this.$url.interview, this.groupData)
                     .then(response => {
 //                        console.log(response)
@@ -158,6 +150,8 @@
                             this.$refs.snackbar.open();
                             return false
                         }
+                        this.$router.push({ name: 'interview.home', params: this.groupData })
+                        return false
                     })
                     .catch(error => {
                       this.isCanSubmit = true;
@@ -206,24 +200,17 @@
         },
 
         sockets: {
-            interviewerPostLoginChannel(obj) {
-                let id = this.getItem(this.unique_id_key)
-//                console.log(obj)
-//                console.log(id)
-                if (obj.unique_id == id) {
-                    if (obj.code == 200) {
-                        this.$router.push({ name: 'interview.home', params: this.authFlag })
-                        return false
-                    } else {
-                        this.openDialog('tip', () => {
-                            this.alert = {
-                                content: `${obj.message}`,
-                                ok: '确定'
-                            }
-                        })
-                    }
-                }
+            connect() {
+                console.log(`管理员登陆-socket_id: ${this.$socket.id}`)
+                this.unique_id = this.$socket.id
+                this.isCanSubmit = true
+                console.log(this.groupData)
             }
+        },
+
+        created() {
+            this.$socket.connect()
+            console.log(this.$socket.connect())
         }
     }
 </script>

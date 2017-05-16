@@ -284,8 +284,6 @@
 <script type="es6">
     import vVideo from './Video.vue'
     export default{
-        props: [ 'unique_id_key' ],
-
         components: {
             vVideo
         },
@@ -344,7 +342,12 @@
                     return ;
                 }
                 this.isValidate = true
-                this.$socket.emit('message', { unique_id: this.unique_id, msg: this.msg })
+
+                this.unique_id = this.$socket.id
+                let send = { unique_id: this.unique_id, msg: this.msg }
+                console.log(send)
+                this.$socket.send(send)
+//                this.$socket.emit('message', { unique_id: this.unique_id, msg: this.msg })
                 this.msg = ''
             },
 
@@ -402,18 +405,19 @@
         },
 
         sockets: {
+            connect() {
+                console.log('IM-socket_id: ' + this.$socket.id)
+            },
             message(messagesObj) {
-                if (messagesObj.unique_id != this.unique_id) {
+                if (messagesObj.unique_id != this.$socket.id) {
                     this.notice()
                 }
                 this.messages.push(messagesObj)
             }
         },
 
-        mounted() {
-            console.log('unique_id_key: ' + this.unique_id_key)
-            console.log('unique_id: ' + this.getItem(this.unique_id_key))
-            this.unique_id = this.getItem(this.unique_id_key)
+        destroyed() {
+            this.$socket.disconnect()
         }
     }
 </script>

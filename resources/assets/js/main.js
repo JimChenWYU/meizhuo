@@ -16,7 +16,6 @@ require('./config/bootstrap');
  */
 import VueMaterial from 'vue-material'
 import VueSocketio from 'vue-socket.io'
-import 'vue-material/dist/vue-material.css'
 import Vuerify from 'vuerify'
 import VueRouter from 'vue-router'
 import App from './App'

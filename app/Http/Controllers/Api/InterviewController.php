@@ -66,6 +66,8 @@ class InterviewController extends ApiController
                     ->update([
                         'is_login' => 1
                     ]);
+
+                return $this->respondWithError('已经被人登录该账号！', 400);
             }
 
             $group = Group::where('department', $parameters['department'])

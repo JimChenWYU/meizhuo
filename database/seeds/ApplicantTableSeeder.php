@@ -22,7 +22,7 @@ class ApplicantTableSeeder extends Seeder
             for ($i = 0; $i < 100; $i++) {
                 \App\Applicant::create([
                     'student_id' => $fake->numberBetween(1000000000, 9999999999),
-                    'name' => $fake->name,
+                    'name' => $fake->lastName,
                     'major' => $fake->company,
                     'phone_num' => $fake->numberBetween(18219111000, 18219119999),
                     'grade' => '大一',
