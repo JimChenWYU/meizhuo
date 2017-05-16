@@ -63,4 +63,6 @@ $ npm run start
 
 ~~代号x0000002: 面试官搜索不提示前台，通知下一位面试者时发出多条通知~~
 
+~~代号x0000003: 签到首屏加载无法加载数据~~
+
 [MIT license](http://opensource.org/licenses/MIT)

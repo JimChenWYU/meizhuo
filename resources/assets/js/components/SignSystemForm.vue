@@ -548,7 +548,7 @@
                   this.isCanUpdate = false
                   this.$http.get(this.$url.signers)
                       .then(response => {
-                          this.updateList(response.data)
+                          this.lineUp = response.data
                           this.isCanUpdate = true
                       })
                       .catch(error => {
