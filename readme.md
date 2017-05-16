@@ -29,6 +29,10 @@ $ composer install
 ```git
 $ npm install
 ```
+如果安装了yarn，还可以使用yarn（**建议**）
+```git
+$ yarn install
+```
 
 根据自己环境配置.env文件
 ```git
