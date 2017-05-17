@@ -13,7 +13,8 @@ const base = {
   resolve: {
     alias: {
       '~': path.resolve(__dirname, 'resources/assets'),
-      'socket.io': path.resolve(__dirname, 'node_modules/socket.io-client/socket.io.js')
+      'socket.io': path.resolve(__dirname, 'node_modules/socket.io-client/socket.io.js'),
+      'vue-material.css': path.resolve(__dirname, 'node_modules/vue-material/dist/vue-material.css')
     },
     extensions: ['.js', '.vue'] // 引用js和vue文件可以省略后缀名
   },
