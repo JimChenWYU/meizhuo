@@ -69,4 +69,6 @@ $ npm run start
 
 ~~代号x0000003: 签到首屏加载无法加载数据~~
 
+~~代号x0000004: 报名页面没有样式~~
+
 [MIT license](http://opensource.org/licenses/MIT)
