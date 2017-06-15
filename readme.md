@@ -71,4 +71,6 @@ $ npm run start
 
 ~~代号x0000004: 报名页面没有样式~~
 
+~~代号x0000005: 修复后台管理强制退出面试官账号对应面试官不正确的问题~~
+
 [MIT license](http://opensource.org/licenses/MIT)

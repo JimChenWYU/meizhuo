@@ -35,13 +35,13 @@
                         @else
                             <md-button class="md-raised md-warn"
                                        type="button"
-                                       @click.native="confirmForce()">强制退出</md-button>
+                                       @click.native="confirmForce('{{ $perGroup['unique_id'] }}')">强制退出</md-button>
 
                             <form action="{{ url('/auth/interviewer/' . $perGroup['id']) }}" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" value="{{ $perGroup['id'] }}" name="id" />
                                 <md-button
-                                        id="true-submit"
+                                        id="true-submit-{{ $perGroup['unique_id'] }}"
                                         style="display: none"
                                         class="md-raised md-warn"
                                         type="submit">强制退出</md-button>
@@ -56,8 +56,8 @@
         <script> window.alert({{ $errors->msg }}) </script>
     @endif
     <script>
-        function confirmForce() {
-            var true_button = document.querySelector('#true-submit')
+        function confirmForce(unique_id) {
+            var true_button = document.querySelector('#true-submit-' + unique_id)
             true_button.addEventListener('click', function () {})
             if (confirm('您确定要强制退出吗？')) {
                 true_button.click()
