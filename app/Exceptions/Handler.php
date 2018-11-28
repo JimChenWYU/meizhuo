@@ -46,6 +46,7 @@ class Handler extends ExceptionHandler
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
+        // 开发环境下使用whoops重写异常机制
         if (config('app.debug')) {
             if ($request->ajax()) {
                 return $this->renderAjaxExceptionWithWhoops($e);
@@ -53,7 +54,20 @@ class Handler extends ExceptionHandler
                 return $this->renderCommonExceptionWithWhoops($e);
             }
         }
-        return parent::render($request, $e);
+
+        // 是否是Http请求错误
+        if ($this->isHttpException($e)) {
+            return $this->renderHttpException($e);
+        }
+        // 404 Not Found
+        else if ($e instanceof NotFoundHttpException)
+        {
+            return view('errors.404');
+        }
+        // 其他错误
+        else {
+            return parent::render($request, $e);
+        }
     }
 
     /**

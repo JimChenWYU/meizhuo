@@ -14,6 +14,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        \DB::listen(function ($sql, $bindings, $time) {
+            $this->app->make('log')->debug("SQL语句执行: {$sql}  参数：" . json_encode($bindings) . " 耗时：{$time}");
+        });
     }
 
     /**

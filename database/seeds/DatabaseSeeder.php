@@ -14,7 +14,12 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call(UserTableSeeder::class);
+//        $this->call(SignerTableSeeder::class);
+        if (env('APP_ENV') == "local") {
+            $this->call(ApplicantTableSeeder::class);
+        }
+        $this->call(ManagerTableSeeder::class);
+        $this->call(InterviewGroupTableSeeder::class);
 
         Model::reguard();
     }

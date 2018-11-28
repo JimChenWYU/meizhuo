@@ -37,7 +37,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        $router->group(['namespace' => $this->namespace], function ($router) {
+        $app = $this->app;
+
+        $router->group(['namespace' => $this->namespace], function (Router $router) use ($app) {
             require app_path('Http/routes.php');
         });
     }
