@@ -8,7 +8,7 @@
     "start": "node webSocketServer/index.js"
   },
   "devDependencies": {
-    "axios": "^0.16.0",
+    "axios": "^0.21.1",
     "babel-loader": "^7.0.0",
     "css-loader": "^0.28.0",
     "laravel-mix": "^0.10.0",
